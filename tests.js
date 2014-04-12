@@ -11,17 +11,18 @@
     env.set("c", 3);
     deepEqual( env.get("c"), 3 );
   });
-  test( "outer", function () {
-    var env1 = new Env(["d"], [4]);
-    var env2 = new Env(["c"], [3], env1);
+  test( "find", function () {
+    var env1 = new Env(["e", "x"], [5, 0]);
+    var env2 = new Env(["c", "d", "x"], [3, 4, -1], env1);
     var env3 = new Env(["a", "b"], [1, 2], env2);
 
-    deepEqual( env3.find("c"), 3 );
-    deepEqual( env3.find("d"), 4 );
+    deepEqual( env2.find("x"), env2 );
+    deepEqual( env2.find("e"), env1 );
 
-    deepEqual( env2.find("d"), 4 );
+    deepEqual( env3.find("c"), env2 );
+    deepEqual( env3.find("x"), env2 );
 
-    deepEqual( env1.find("a"), null );
+    deepEqual( env3.find("x").get("x"), -1 );
   });
 
 })();

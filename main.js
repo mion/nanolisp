@@ -1,9 +1,13 @@
 "use strict";
 
 function Env (parms, args, outer) {
-  if (parms && args) { _equal( parms.length, args.length ); }
+  if (parms && args) {
+    _array(parms);
+    _array(args);
+    _equal( parms.length, args.length );
+  }
 
-  this.outer = outer || null;
+  this.outer = outer;
 
   var dict = {};
   var pairs = _.zip(parms, args);
@@ -12,8 +16,8 @@ function Env (parms, args, outer) {
     var parm = parm_arg[0];
     var arg = parm_arg[1];
 
-    _ok( parm );
-    _ok( arg );
+    _defined( parm );
+    _defined( arg );
 
     dict[parm] = arg;
   });
@@ -22,21 +26,22 @@ function Env (parms, args, outer) {
 }
 
 Env.prototype.get = function(parm) {
-  _ok( parm );
+  _defined( parm ); 
   return this.dict[parm];
 };
 
 Env.prototype.set = function(parm, arg) {
-  _ok( parm ); _ok( arg ); 
+  _defined( parm );
+  _defined( arg ); 
   this.dict[parm] = arg;
 };
 
 Env.prototype.find = function(parm) {
   var arg = this.get(parm);
-  if (arg) { return arg; }
+  if (arg) { return this; }
   else {
     if (!this.outer) {
-      return null;
+      return undefined;
     } else {
       return this.outer.find(parm);
     }

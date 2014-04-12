@@ -3,9 +3,9 @@ function print (msg) {
 }
 
 // Functions prefixed with "_" are all error throwing assertions
-function _ok (x) {
-  if (!x) {
-    throw new Error("assertion failed: " + x + " is not truthy");
+function _defined (x) {
+  if (x == "undefined") {
+    throw new Error("assertion failed: " + x + " is undefined");
   }
 }
 
@@ -18,5 +18,11 @@ function _equal (x, y) {
 function _type (x, type) {
   if (typeof x !== type) {
     throw new Error("assertion failed: type of " + x + " !== '" + type + "'");
+  }
+}
+
+function _array (x) {
+  if (!_.isArray(x)) {
+    throw new Erro("assertion failed: " + x + "is not an Array");
   }
 }
