@@ -25,4 +25,6 @@
     deepEqual( env3.find("x").get("x"), -1 );
   });
 
+  module( "SExp" );
+
 })();
