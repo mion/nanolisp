@@ -1,23 +1,23 @@
-"use strict";
+// "use strict";
 
-function SExp (x, env) {
-  var list = [];
+// function Sexp (x, env) {
+//   var list = [];
 
-  if (_.isArray(x)) {
-    list = x;
-  }
+//   if (_.isArray(x)) {
+//     list = x;
+//   }
 
-  if (_.isString(x)) {
-    list.
-  }
+//   if (_.isString(x)) {
+//     list.
+//   }
 
-  this.list = list;
-}
+//   this.list = list;
+// }
 
-var env = new Env(
-  ["a", "b", "c"],
-  [1, 2, 3]
-);
+// var env = new Env(
+//   ["a", "b", "c"],
+//   [1, 2, 3]
+// );
 
-var s1 = new SExp(["a"], env);
-eql( s1.compute() == 1 );
+// var s1 = new Sexp(["a"], env);
+// eql( s1.compute() == 1 );

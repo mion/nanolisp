@@ -25,6 +25,17 @@
     deepEqual( env3.find("x").get("x"), -1 );
   });
 
-  module( "SExp" );
+  module( "type" );
+  test( "all", function () {
+    var s1 = new Symbol("foo");
+    var s2 = new Symbol("foo");
+    var s3 = new Symbol("bar");
+
+    ok( s1 != s2 );
+    ok( s2 != s3 );
+
+    ok( s1.val() == s2.val() );
+    ok( s2.val() != s3.val() );
+  });
 
 })();
