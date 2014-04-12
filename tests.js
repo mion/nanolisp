@@ -65,11 +65,18 @@
 
   module( "compute" );
   test( "constant literals", function () {
-    var sexpString = compute(string("hello"));
-    ok( string("hello").equal(sexpString) );
+    var sexpResult1 = compute(string("hello"));
+    ok( string("hello").equal(sexpResult1) );
 
-    var sexpNumber = compute(number(3));
-    ok( number(3).equal(sexpNumber) );
+    var sexpResult2 = compute(number(3));
+    ok( number(3).equal(sexpResult2) );
   });
 
+  test( "variable reference", function () {
+    var env = new Env(["one", "two"], [number(1), number(2)]);
+
+    var sexpResult1 = compute(symbol("one"), env);
+    ok( number(1).equal(sexpResult1) );
+  });
+    
 })();
