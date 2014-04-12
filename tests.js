@@ -75,8 +75,8 @@
   test( "variable reference", function () {
     var env = new Env(["one", "two"], [number(1), number(2)]);
 
-    var sexpResult1 = compute(symbol("one"), env);
-    ok( number(1).equal(sexpResult1) );
+    ok( compute(symbol("one"), env).equal(number(1)) );
+    ok( compute(symbol("two"), env).equal(number(2)) );
   });
-    
+
 })();

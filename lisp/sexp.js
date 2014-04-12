@@ -52,6 +52,6 @@ function symbol (value) {
   return new Sexp("Symbol", value);
 }
 
-function nil () {
-  return new Sexp("Nil", "NIL_VALUE");
+function error (value) {
+  return new Sexp("Error", value);
 }
