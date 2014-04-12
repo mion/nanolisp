@@ -1,26 +1,24 @@
 "use strict";
 
 function Env (parms, args, outer) {
+  this.outer = outer;
+  var dict = {};
+
   if (parms && args) {
     assertArray(parms);
     assertArray(args);
     assertEqual( parms.length, args.length );
+
+    _.zip(parms, args).forEach(function (parm_arg) {
+      var parm = parm_arg[0];
+      var arg = parm_arg[1];
+
+      assertDefined( parm );
+      assertDefined( arg );
+
+      dict[parm] = arg;
+    });
   }
-
-  this.outer = outer;
-
-  var dict = {};
-  var pairs = _.zip(parms, args);
-
-  pairs.forEach(function (parm_arg) {
-    var parm = parm_arg[0];
-    var arg = parm_arg[1];
-
-    assertDefined( parm );
-    assertDefined( arg );
-
-    dict[parm] = arg;
-  });
 
   this.dict = dict;
 }

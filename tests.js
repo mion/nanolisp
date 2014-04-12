@@ -48,6 +48,8 @@
   });
 
   test( "Env find", function () {
+    // TODO: maybe Env should only accept symbols as parameters,
+    // instead of raw values.
     var env1 = new Env(["e", "x"], [5, 0]);
     var env2 = new Env(["c", "d", "x"], [3, 4, -1], env1);
     var env3 = new Env(["a", "b"], [1, 2], env2);
@@ -61,8 +63,13 @@
     deepEqual( env3.find("x").get("x"), -1 );
   });
 
-  test( "compute", function () {
-    ok( true );
+  module( "compute" );
+  test( "constant literals", function () {
+    var sexpString = compute(string("hello"));
+    ok( string("hello").equal(sexpString) );
+
+    var sexpNumber = compute(number(3));
+    ok( number(3).equal(sexpNumber) );
   });
 
 })();
