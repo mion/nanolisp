@@ -1,7 +1,7 @@
-function Symbol (string) {
-  this.string = string;
-}
+// function Symbol (string) {
+//   this.string = string;
+// }
 
-Symbol.prototype.val = function() {
-  return this.string;
-};
+// Symbol.prototype.val = function() {
+//   return this.string;
+// };

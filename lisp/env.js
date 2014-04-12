@@ -2,9 +2,9 @@
 
 function Env (parms, args, outer) {
   if (parms && args) {
-    _array(parms);
-    _array(args);
-    _equal( parms.length, args.length );
+    assertArray(parms);
+    assertArray(args);
+    assertEqual( parms.length, args.length );
   }
 
   this.outer = outer;
@@ -16,8 +16,8 @@ function Env (parms, args, outer) {
     var parm = parm_arg[0];
     var arg = parm_arg[1];
 
-    _defined( parm );
-    _defined( arg );
+    assertDefined( parm );
+    assertDefined( arg );
 
     dict[parm] = arg;
   });
@@ -26,13 +26,13 @@ function Env (parms, args, outer) {
 }
 
 Env.prototype.get = function(parm) {
-  _defined( parm ); 
+  assertDefined( parm ); 
   return this.dict[parm];
 };
 
 Env.prototype.set = function(parm, arg) {
-  _defined( parm );
-  _defined( arg ); 
+  assertDefined( parm );
+  assertDefined( arg ); 
   this.dict[parm] = arg;
 };
 
