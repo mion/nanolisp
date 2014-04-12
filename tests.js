@@ -2,11 +2,39 @@
   "use strict";
 
   test( "S-expressions", function () {
-    var sym1 = symbol("foo");
-    var sym2 = symbol("bar");
+    var sym1 = symbol("foo"),
+        sym2 = symbol("bar");
 
     ok( ! sym1.equal(sym2) );
     ok( sym1.equal(symbol("foo")) );
+
+    var str1 = string("hello"),
+        str2 = string("bye");
+
+    ok( ! str1.equal(str2) );
+    ok( str1.equal(string("hello")) );
+
+    var num1 = number(13),
+        num2 = number(42);
+
+    ok( ! num1.equal(num2) );
+    ok( num1.equal(number(13)) );
+
+    // be careful with this: an sexp is an array of other sexps
+    // NOT raw values!
+    var ary1 = array([ symbol("foo"), number(3), string("hello") ]);    
+    var ary2 = array([ symbol("foo"), number(3), string("hello") ]);
+    var ary3 = array([ symbol("foo"), number(2), string("hi") ]);
+
+    ok( ary1.equal(ary2) );
+    ok( ! ary1.equal(ary3) );
+
+    // (lambda (x) (* x 2))
+    var ary4 = array([ symbol("lambda"), array([ symbol("x") ]), array([ symbol("*"), symbol("x"), number(2) ]) ]);
+    var ary5 = array([ symbol("lambda"), array([ symbol("x") ]), array([ symbol("*"), symbol("x"), number(2) ]) ]);
+
+    ok( ary4.equal(ary5) );
+    ok( !ary4.equal(ary1) );
   });
 
   test( "Env new, get and set", function() {
