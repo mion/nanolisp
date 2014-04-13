@@ -29,7 +29,7 @@ function compute (s, e) {
 
     // (quote exp) => exp
     if (first.value === "quote") {
-      var exp = s.rest();
+      var exp = s.at(1);
       return exp;
     }
   } else {

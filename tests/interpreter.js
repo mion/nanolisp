@@ -44,4 +44,6 @@ test( "quote", function () {
   ]);
 
   deepEqual( compute(s2), array([string("universe"), symbol("x"), number(42)]) );
+  
+  // TODO: (quote), (quote 1 2 3) => argument error
 });
