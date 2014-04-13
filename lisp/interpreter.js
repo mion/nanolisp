@@ -83,10 +83,10 @@ var compute = function(s, e) {
       if (!parms.value.every(function (sexp) { return sexp.isSymbol(); })) return errorType();
 
       return lambda(function(args) {
-        console.log(exp);
-        console.log(parms);
-        console.log(args);
-        console.log(e);
+        // console.log(exp);
+        // console.log(parms);
+        // console.log(args);
+        // console.log(e);
         // var args = [];
         // for (var i = 0; i < arguments.length; i++) {
         //   args[i] = arguments[i];

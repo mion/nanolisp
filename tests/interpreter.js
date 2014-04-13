@@ -150,9 +150,19 @@
     t.evl( '(fn 1 "hi")', {err:"type"} );
     t.evl( '(fn (x y 5 z) (+ x y z))', {err:"type"} );
 
-    var e = new Env();
-    t.evl( '(def id (fn (x) x))', {env: e, err: "none"} );
-    eq( e.get(symbol("id")).value(array([number(123)])), number(123) );
+    var lmb;
+
+    lmb = evaluate( '(fn (x) x)' ).value;
+    eq( lmb(array([ number(123) ])), number(123) );
+    eq( lmb(array([ string("hi") ])), string("hi") );
+
+    lmb = evaluate( '(fn (x y z) (if x (quote y) z))' ).value;
+    eq( lmb(array([ bool(true), number(999), string("foo") ])), symbol("y") );
+    eq( lmb(array([ bool(false), number(999), string("foo") ])), string("foo") );
+
+    lmb = evaluate( '(fn () (set name "jmc"))', fx.env ).value;
+    eq( lmb(array([])), errorNone() );
+    t.ref( fx.env, 'name', {str: "jmc"} );
   });
 
 })();
