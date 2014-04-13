@@ -46,10 +46,29 @@
     QUnit.push(result, sexp, sexpExpected, msg);
   };
 
+  QUnit.assert.lmb = function(lmbExp, argsExp, options, env) {
+    var lmb = evaluate(lmbExp, env).value;
+    var args = parse(argsExp);
+    var expected = optionsToSexp(options);
+
+    var actual = lmb(args);
+    var result = expected.equal( actual );
+    var msg = sprintf("%s called with %s => %s", lmbExp, argsExp, options);
+
+    QUnit.push(result, actual, expected, msg);
+  };
+
+  var optionsToSexp = function (options) {
+    if (_.has(options, "str")) { return string(options.str); }
+    else if (_.has(options, "num")) { return number(options.num); }
+    else if (_.has(options, "sym")) { return symbol(options.sym); }
+    else if (_.has(options, "err")) { return error(options.err); }
+    else if (_.has(options, "bool")) { return bool(options.bool); }
+    else { return parse(options); }
+  };
+
   var eq = deepEqual;
-
-  var fx = {};
-
+  var fx = {}; 
   module( "interpreter", {
     setup: function () {
       fx["root"] = new Env(
@@ -150,18 +169,11 @@
     t.evl( '(fn 1 "hi")', {err:"type"} );
     t.evl( '(fn (x y 5 z) (+ x y z))', {err:"type"} );
 
-    var lmb;
+    t.lmb( '(fn (x) x)', '(123)', '123', fx.env );
+    t.lmb( '(fn (x y z) (if x (quote y) z))', '(true 999 "foo")', 'y', fx.env );
+    t.lmb( '(fn (x y z) (if x (quote y) z))', '(false 999 "foo")', '"foo"', fx.env );
 
-    lmb = evaluate( '(fn (x) x)' ).value;
-    eq( lmb(array([ number(123) ])), number(123) );
-    eq( lmb(array([ string("hi") ])), string("hi") );
-
-    lmb = evaluate( '(fn (x y z) (if x (quote y) z))' ).value;
-    eq( lmb(array([ bool(true), number(999), string("foo") ])), symbol("y") );
-    eq( lmb(array([ bool(false), number(999), string("foo") ])), string("foo") );
-
-    lmb = evaluate( '(fn () (set name "jmc"))', fx.env ).value;
-    eq( lmb(array([])), errorNone() );
+    t.lmb( '(fn () (set name "jmc"))', '()', {err: "none"}, fx.env );
     t.ref( fx.env, 'name', {str: "jmc"} );
   });
 
