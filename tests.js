@@ -62,7 +62,14 @@
     ok( !ary4.equal(ary1) );
   });
   test("first, rest", function () {
-    ok( true );
+    var s1 = array([number(1), number(2), number(3)]);
+
+    deepEqual( s1.first(), number(1) );
+    deepEqual( s1.rest(), array([number(2), number(3)]) );
+
+    var s2 = string("hi");
+    deepEqual( s2.first(), errorType() );
+    deepEqual( s2.rest(), errorType() );
   });
 
   module( "Env" );

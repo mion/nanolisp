@@ -36,6 +36,19 @@ Sexp.prototype.equal = function(sexp) {
 };
 
 Sexp.prototype.first = function() {
+  if (this.is("Array")) {
+    return this.value[0];
+  } else {
+    return errorType();
+  }
+};
+
+Sexp.prototype.rest = function() {
+  if (this.is("Array")) {
+    return array( this.value.slice(1, this.value.length) );
+  } else {
+    return errorType();
+  }
 };
 
 function string (value) {
@@ -62,6 +75,6 @@ function errorUnknownSymbol () {
   return error("unknown symbol");
 }
 
-function errorUnknownType () {
-  return error("unknown type");
+function errorType () {
+  return error("type");
 }
