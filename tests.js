@@ -1,6 +1,20 @@
 (function () {
   "use strict";
 
+  // QUnit.assert.equalSexp = function( sexp1, sexp2, message ) {
+  //   var result = false;
+
+  //   if (sexp1.equal(sexp2)) {
+  //     result = true;
+  //   } else {
+  //     print(sexp1 + " is not equal to " + sexp2);
+  //     print(sexp1);
+  //     print(sexp2);
+  //   }
+
+  //   QUnit.push(result, result, sexp1, sexp2, message);
+  // };
+
   test( "S-expressions", function () {
     var sym1 = symbol("foo"),
         sym2 = symbol("bar");
@@ -77,6 +91,12 @@
 
     ok( compute(symbol("one"), env).equal(number(1)) );
     ok( compute(symbol("two"), env).equal(number(2)) );
+
+    var s1 = compute(symbol("apple"), env);
+    if (!s1.equal(errorUnknownSymbol())) {
+      console.log(s1);
+      ok( false );
+    }
   });
 
 })();

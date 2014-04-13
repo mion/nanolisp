@@ -15,9 +15,6 @@ Sexp.prototype.equal = function(sexp) {
   if (!this.is(sexp.type)) {
     return false;
   } else {
-    if (this.is("String") || this.is("Number") || this.is("Symbol")) {
-      return this.value === sexp.value; 
-    }
     if (this.is("Array")) {
       if (this.value.length != sexp.value.length) { return false; }
 
@@ -32,6 +29,8 @@ Sexp.prototype.equal = function(sexp) {
       };
 
       return true;
+    } else {
+      return this.value === sexp.value; 
     }
   }
 };
@@ -54,4 +53,8 @@ function symbol (value) {
 
 function error (value) {
   return new Sexp("Error", value);
+}
+
+function errorUnknownSymbol () {
+  return error("unknown symbol");
 }

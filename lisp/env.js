@@ -39,7 +39,7 @@ Env.prototype.find = function(parm) {
   if (arg) { return this; }
   else {
     if (!this.outer) {
-      return undefined;
+      return null;
     } else {
       return this.outer.find(parm);
     }

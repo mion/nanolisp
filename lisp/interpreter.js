@@ -12,8 +12,12 @@ function compute (s, e) {
     return s;
   } else if (s.is("Symbol")) { // variable reference
     var env = e.find(s.value);
-    var sexp = env.get(s.value);
 
-    return sexp;
+    if (env !== null) {
+      var sexp = env.get(s.value); 
+      return sexp;
+    } else {
+      return errorUnknownSymbol();
+    }
   }
 }
