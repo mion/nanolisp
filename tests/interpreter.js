@@ -177,4 +177,10 @@
     t.ref( fx.env, 'name', {str: "jmc"} );
   });
 
+  test( "do form", function (t) {
+    t.evl( '(do)', {err: "argument"} );
+    t.evl( '(do 1 2 3)', {num: 3} );
+    t.evl( '(do (def foo "bar") (if true foo baz))', {env: fx.env, str: "bar"} );
+  });
+
 })();

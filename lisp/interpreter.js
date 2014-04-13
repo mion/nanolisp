@@ -83,16 +83,19 @@ var compute = function(s, e) {
       if (!parms.value.every(function (sexp) { return sexp.isSymbol(); })) return errorType();
 
       return lambda(function(args) {
-        // console.log(exp);
-        // console.log(parms);
-        // console.log(args);
-        // console.log(e);
-        // var args = [];
-        // for (var i = 0; i < arguments.length; i++) {
-        //   args[i] = arguments[i];
-        // };
         return compute(exp, new Env(parms.value, args.value, e));
       });
+    } else if (first.value === "do") { // (do exp*)
+      if (s.value.length < 2) return errorArgument();
+
+      var val = errorNone(),
+          sexps = s.rest().value;
+
+      sexps.forEach(function (sexp) {
+        val = compute(sexp, e);
+      });
+
+      return val;
     }
   } else {
     return s; // constant literal, error
