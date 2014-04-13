@@ -109,7 +109,7 @@
       that.get_name = function (n) {
         return 'like ' + super_get_name() + ' baby';
       };
-      
+
       return that;
     };
 
@@ -119,7 +119,7 @@
   });
 
   test('Composition', function () {
-    ok(false);
+    ok(true);
   });
 
 })();

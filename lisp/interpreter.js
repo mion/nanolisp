@@ -1,12 +1,12 @@
 "use strict";
 
-var globalEnv = new Env();
+var global = new Env();
 
 var makeLambda = function (env, name, opt, func) {
   var wrapper = function (sexps) { 
     if (opt.length && (sexps.length !== opt.length)) return errorArgument();
 
-    var args = _.map(sexps, function (sexp) { return sexp.value; });
+    var args = _.map(sexps.value, function (sexp) { return sexp.value; });
     var ret = func.apply(this, args);
 
     var types = [
@@ -26,12 +26,12 @@ var makeLambda = function (env, name, opt, func) {
 
   env.dict[name] = lambda(wrapper);
 };
-
-var addGlobals = function (env) {
-  makeLambda(env, "+", {}, function () {
-    return arguments[0] + arguments[1];
-  });
-};
+makeLambda(global, "+", {}, function () {
+  return arguments[0] + arguments[1];
+});
+makeLambda(global, "*", {}, function () {
+  return arguments[0] * arguments[1];
+});
 
 // var addGlobals = function (env) {
 //   env.dict["+"] = lambda(function(args) {    
@@ -41,7 +41,7 @@ var addGlobals = function (env) {
 // Evaluate an s-expression `s` in an environment `e`
 // NB: traditionally called "eval", avoid conflict with JavaScript's own eval
 var compute = function (s, e) { 
-  e = e || globalEnv;
+  e = e || global;
  
   if (s.isSymbol()) { // variable reference
     var env = e.find(s);

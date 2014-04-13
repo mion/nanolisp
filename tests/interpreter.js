@@ -184,7 +184,11 @@
   });
 
   test( "procedure call", function(t) {
-    t.evl( '(do (def yes-no (fn (x) (if x "yes" "no"))) (yes-no true))', {str: "yes"} );
+    t.evl( '(do (def yes-no (fn (x) (if x "yes" "no"))) (yes-no true))', {env: fx.env, str: "yes"} );
+  });
+
+  test("standard lib", function (t) {
+    equal( evaluate('(+ 1 2)'), number(3) );
   });
   
 })();
