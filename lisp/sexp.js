@@ -28,8 +28,6 @@ Sexp.prototype.ok = function() {
 };
 
 Sexp.prototype.equal = function(sexp) {
-  assertDefined(sexp);
-
   if (!this.is(sexp.type)) {
     return false;
   } else {
@@ -39,9 +37,6 @@ Sexp.prototype.equal = function(sexp) {
       for (var i = 0; i < this.value.length; i++) {
         var myValue = this.value[i];
         var hisValue = sexp.value[i];
-
-        assertInstanceOf(myValue, Sexp);
-        assertInstanceOf(hisValue, Sexp);
 
         if (!myValue.equal(hisValue)) { return false; }
       };
@@ -90,7 +85,6 @@ var symbol = function (value) {
 };
 
 var bool = function (value) {
-  assert( value === true || value === false );
   return new Sexp("Bool", value);
 };
 

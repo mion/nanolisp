@@ -8,32 +8,6 @@ var assert = function (x) {
   }
 };
 
-var assertDefined = function (x) {
-  if (x == "undefined") {
-    throw new Error("assertion failed: " + x + " is undefined");
-  }
-};
-
-var assertEqual = function (x, y) {
-  if (x !== y) {
-    throw new Error("assertion failed: " + x + " !== " + y);
-  }
-};
-
-var assertInstanceOf = function (x, proto) {
-  if ( !(x instanceof proto) ) {
-    throw new Error("assertion failed: " + x + " is not an instance of '" + proto + "'");
-  }
-};
-
-var assertArray = function (x) {
-  assertDefined(x);
-  
-  if (!_.isArray(x)) {
-    throw new Error("assertion failed: " + x + "is not an Array");
-  }
-};
-
 // AUGMENTATION
 // by Douglas Crockford
 Function.prototype.method = function (name, func) {

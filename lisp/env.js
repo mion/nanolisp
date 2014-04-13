@@ -25,8 +25,6 @@ var Env = function (parms, args, outer) {
 };
 
 Env.prototype.get = function(parm) {
-  assertDefined( parm ); 
-  assert( parm.isSymbol() );
   if (this.dict[parm.value]) {
     return this.dict[parm.value];
   } else {
@@ -35,17 +33,11 @@ Env.prototype.get = function(parm) {
 };
 
 Env.prototype.set = function(sym, sexp) {
-  assertDefined( sym );
-  assert( sym.isSymbol() );
-  assertDefined( sexp ); 
   this.dict[sym.value] = sexp;
   return errorNone();
 };
 
 Env.prototype.find = function(sym) {
-  assert( sym );
-  assert( sym.isSymbol() );
-
   var sexp = this.get(sym);
 
   if (sexp.isError()) {

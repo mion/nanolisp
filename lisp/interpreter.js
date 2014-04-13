@@ -2,33 +2,45 @@
 
 var globalEnv = new Env();
 
-// var makeLambda = function (env, name, args, func) {
-//   var wrapper = function () { 
-//     if (arguments.length !== args.length) return errorArgument();
+var makeLambda = function (env, name, opt, func) {
+  var wrapper = function (sexps) { 
+    if (opt.length && (sexps.length !== opt.length)) return errorArgument();
 
-//     var ret = func(arguments);
-//   };
+    var args = _.map(sexps, function (sexp) { return sexp.value; });
+    var ret = func.apply(this, args);
 
-//   env.dict[name] = lambda(wrapper);
-// };
+    var types = [
+      [ _.isNumber, number ],
+      [ _.isString, string ],
+      [ _.isBoolean, bool ],
+      [ _.isArray, array ]
+    ];
+    _.each(types, function (pair) {
+      var isType = pair[0],
+          toSexp = pair[1];
 
-// var addGlobals = function (env) {
-//   makeLambda(env, "+", {length: 2}, function () {
-//     return arguments[0] + arguments[1];
-//   });
-// };
+      if (isType(ret)) return toSexp(ret);
+    });    
+    return errorType(); // TODO: dont know how to convert
+  };
+
+  env.dict[name] = lambda(wrapper);
+};
+
 var addGlobals = function (env) {
-  env.dict["+"] = lambda(function(args) {
-    
+  makeLambda(env, "+", {}, function () {
+    return arguments[0] + arguments[1];
   });
 };
+
+// var addGlobals = function (env) {
+//   env.dict["+"] = lambda(function(args) {    
+//   });
+// };
 
 // Evaluate an s-expression `s` in an environment `e`
 // NB: traditionally called "eval", avoid conflict with JavaScript's own eval
 var compute = function (s, e) { 
-  assertDefined(s);
-  assertInstanceOf(s, Sexp);
-
   e = e || globalEnv;
  
   if (s.isSymbol()) { // variable reference
