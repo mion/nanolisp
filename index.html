@@ -8,20 +8,22 @@
     <link rel="stylesheet" type="text/css" href="qunit.css">
 </head>
 <body>
-    <!-- Dependencies -->
+    <!-- dependencies -->
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script type="text/javascript" src="qunit.js"></script>
     <script type="text/javascript" src="augment.js"></script>
     <script type="text/javascript" src="underscore.js"></script>
 
-    <!-- nanolisp -->
+    <!-- source -->
     <script type="text/javascript" src="utils.js"></script>
     <script type="text/javascript" src="lisp/sexp.js"></script>
     <script type="text/javascript" src="lisp/env.js"></script>
     <script type="text/javascript" src="lisp/interpreter.js"></script>
 
-    <!-- QUnit -->
-    <div id="qunit"></div>
-    <div id="qunit-fixture"></div>
-    <script type="text/javascript" src="qunit.js"></script>
-    <script type="text/javascript" src="tests.js"></script>
+    <!-- tests -->
+    <script type="text/javascript" src="tests/sexp.js"></script>
+    <script type="text/javascript" src="tests/env.js"></script>
+    <script type="text/javascript" src="tests/interpreter.js"></script>
 </body>
 </html>
