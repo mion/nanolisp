@@ -32,6 +32,7 @@ Env.prototype.set = function(parm, arg) {
   assertDefined( parm );
   assertDefined( arg ); 
   this.dict[parm] = arg;
+  return null;
 };
 
 Env.prototype.find = function(parm) {

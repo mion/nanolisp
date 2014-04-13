@@ -56,7 +56,23 @@
   });
 
   test( "set form", function () {
-    ok(true);
+    ieq( '(set)', errorArgument() );
+    ieq( '(set foo)', errorArgument() );
+    ieq( '(set 1 "hi")', errorType() );
+    ieq( '(set foo bar)', errorReference() );
+
+    var env = new Env(['name', 'age'], ["Gabriel", 23]),
+        s1 = parse('(set name "Gandalf")'),
+        s2 = parse('(set age 999)');
+
+    var r1 = compute(s1, env);
+    ok( r1.isNone() );
+    eq( env.find('name').get('name'), string("Gandalf") );
+
+    var r2 = compute(s2, env);
+    ok( r2.isNone() );
+    eq( env.find('age').get('age'), number(999) );
+    eq( env.find('name').get('name'), string("Gandalf") );
   });
 
 })();

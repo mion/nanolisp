@@ -44,6 +44,20 @@ function compute (s, e) {
         return compute(s.at(3), e);
       }
     } else if (first.value === "set") { // (set var exp)
+      if (s.value.length !== 3) return errorArgument();
+
+      var sym = s.at(1),
+          exp = s.at(2);
+
+      if (!sym.isSymbol()) return errorType();
+
+      var env = e.find(sym.value);
+
+      if (env === null) return errorReference();
+
+      env.set(sym.value, compute(exp, e));
+      
+      return none();
     }
   } else {
     return s; // constant literal, error
