@@ -1,8 +1,8 @@
 (function () { 
   "use strict";
 
-  QUnit.assert.evl = function(options) {
-    var sexp = evaluate(options.exp, options.env);
+  QUnit.assert.evl = function(exp, options) {
+    var sexp = evaluate(exp, options.env);
     var sexpExpected = null;
     if (options.str) { sexpExpected = string(options.str); }
     if (options.num) { sexpExpected = number(options.num); }
@@ -14,9 +14,9 @@
     var msg = null;
 
     if (options.env) {
-      msg = sprintf("evalute('%s', %s) equal to %s", options.exp, options.env.toString(), sexpExpected.toString());
+      msg = sprintf("evalute('%s', %s) equal to %s", exp, options.env.toString(), sexpExpected.toString());
     } else { 
-      msg = sprintf("evalute('%s') equal to %s", options.exp, sexpExpected.toString());
+      msg = sprintf("evalute('%s') equal to %s", exp, sexpExpected.toString());
     }
 
     QUnit.push(result, sexp, sexpExpected, msg);
@@ -39,46 +39,35 @@
   };
 
   var fx = {};
-  // t.str1 = string("hello");
-  // t.str2 = string("hi");
-  // t.str3 = string("bye");
-
-  // t.sym1 = symbol("foo");
-  // t.sym2 = symbol("bar");
-  // t.sym3 = symbol("baz");
-
-  // t.num1 = number(1);
-  // t.num2 = number(2);
-  // t.num3 = number(3);
 
   module( "interpreter", {
     setup: function () {
+      fx["root"] = new Env(
+        [symbol("male")],
+        [bool(true)]
+      );
       fx["env"] = new Env(
-        [symbol("name"), symbol("age"), symbol("male")], 
-        [string("mion"), number(23), bool(true)]
+        [symbol("name"), symbol("age")], 
+        [string("mion"), number(23)],
+        fx["root"]
       );
     },
     teardown: function () {
       delete fx["env"]; 
+      delete fx["root"]; 
     }
   });
 
-  test( "constant literals", function (assert) {
-    assert.evl({exp: '"hello"', str: "hello"});
-    assert.evl({exp: '3', num: 3 });
-    assert.evl({exp: '-2', num: -2 });
-    assert.evl({exp: 'foo', err: "reference" });
-    assert.evl({exp: 'name', env: fx.env, str: "mion" });
+  test( "constant literals", function (t) {
+    t.evl( '"hello"', {str: "hello"} );
+    t.evl( '3', {num: 3} );
+    t.evl( '-2', {num: -2} );
   });
 
-  test( "variable reference", function () {
-    var root = new Env([symbol("three")], [number(3)]);
-    var env = new Env([symbol("one"), symbol("two")], [number(1), number(2)], root);
-
-    eq( compute(symbol("one"), env), number(1) );
-    eq( compute(symbol("two"), env), number(2) );
-    eq( compute(symbol("apple"), env), errorReference() );
-    eq( compute(symbol("three"), env), number(3) );
+  test( "variable reference", function (t) {
+    t.evl('foo', {err: "reference"});
+    t.evl('name', {env: fx.env, str: "mion"});
+    t.evl('male', {env: fx.env, bool: true});
   });
 
   test( "errors", function () { 
