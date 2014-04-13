@@ -24,7 +24,7 @@ function assertArray (x) {
   assertDefined(x);
   
   if (!_.isArray(x)) {
-    throw new Erro("assertion failed: " + x + "is not an Array");
+    throw new Error("assertion failed: " + x + "is not an Array");
   }
 }
 
