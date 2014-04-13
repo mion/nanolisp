@@ -19,7 +19,7 @@ var compute = function(s, e) {
     } else {
       return errorReference();
     }
-  } else if (s.isArray()) { // interpret is as a form
+  } else if (s.isArray()) { // compute it as a form
     var first = s.first();
 
     // first element in a form must be a symbol
@@ -75,6 +75,6 @@ var compute = function(s, e) {
   }
 };
 
-var interpret = function (str, env) {
+var evaluate = function (str, env) {
   return compute(parse(str), env);
 };

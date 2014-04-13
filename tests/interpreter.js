@@ -3,7 +3,7 @@
 
   var eq = deepEqual;
   var ieq = function (str, outcome, msg) {
-    return eq( interpret(str), outcome, msg );
+    return eq( evaluate(str), outcome, msg );
   };
   var eeq = function (env, name, exp, msg) {
     return eq( env.find(name).get(name), exp, msg );
@@ -43,14 +43,14 @@
   });
 
   test( "quote form", function () {
-    eq( interpret('(quote)'), errorArgument() );
-    eq( interpret('(quote foo bar)'), errorArgument() );
+    eq( evaluate('(quote)'), errorArgument() );
+    eq( evaluate('(quote foo bar)'), errorArgument() );
 
-    eq( interpret("(quote foo)"), parse("foo") );
-    eq( interpret("(quote 1)"), parse("1") );
+    eq( evaluate("(quote foo)"), parse("foo") );
+    eq( evaluate("(quote 1)"), parse("1") );
 
-    eq( interpret("(quote (1 2 3))"), parse("(1 2 3)") );
-    eq( interpret('(quote ("hello world" foo -25))'), parse('("hello world" foo -25)') );
+    eq( evaluate("(quote (1 2 3))"), parse("(1 2 3)") );
+    eq( evaluate('(quote ("hello world" foo -25))'), parse('("hello world" foo -25)') );
   });
 
   test( "if form", function () {
