@@ -55,7 +55,11 @@ var compute = function(s, e) {
 
       if (env === null) return errorReference();
 
-      env.set(sym.value, compute(exp, e));
+      var computedExp = compute(exp, e);
+
+      if (computedExp.isError()) return computedExp;
+
+      env.set(sym.value, computedExp);
 
       return none();
     } else if (first.value === "def") { // (def var exp)

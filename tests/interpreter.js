@@ -74,11 +74,13 @@
     // var env = new Env(['name', 'age'], ["Gabriel", 23]);
     var env = mkenv({name: "Gabriel", age: 23});
 
+    eq( evaluate('(set name foo)', env), errorReference() );
+
     var r1 = evaluate('(set name "Gandalf")', env);
     ok( r1.isNone() );
     eeq( env, 'name', string("Gandalf") );
 
-    var r2 = compute(parse('(set age 999)'), env);
+    var r2 = evaluate('(set age 999)', env);
     ok( r2.isNone() );
     eeq( env, 'age', number(999) );
     eeq( env, 'name', string("Gandalf") );
