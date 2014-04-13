@@ -2,6 +2,11 @@
 
 module( "parser" );
 
+test( "tokens", function () {
+  deepEqual( tokenize('(foo (bar) 2)'), ['(', 'foo', '(', 'bar', ')', '2', ')'] );
+  deepEqual( tokenize(' (foo bar baz )'), ["(", "foo", "bar", "baz", ")"] );
+});
+
 test( "atoms", function () {
   deepEqual( parse("1"), number(1) );
   deepEqual( parse("-42"), number(-42) );
