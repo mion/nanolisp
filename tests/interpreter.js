@@ -4,11 +4,11 @@
   QUnit.assert.evl = function(exp, options) {
     var sexp = evaluate(exp, options.env);
     var sexpExpected = null;
-    if (options.str) { sexpExpected = string(options.str); }
-    else if (options.num) { sexpExpected = number(options.num); }
-    else if (options.sym) { sexpExpected = symbol(options.sym); }
-    else if (options.err) { sexpExpected = error(options.err); }
-    else if (options.bool) { sexpExpected = bool(options.bool); }
+    if (_.has(options, "str")) { sexpExpected = string(options.str); }
+    else if (_.has(options, "num")) { sexpExpected = number(options.num); }
+    else if (_.has(options, "sym")) { sexpExpected = symbol(options.sym); }
+    else if (_.has(options, "err")) { sexpExpected = error(options.err); }
+    else if (_.has(options, "bool")) { sexpExpected = bool(options.bool); }
     else { sexpExpected = parse(options); }
 
     var result = sexp.equal(sexpExpected);
@@ -44,8 +44,8 @@
   module( "interpreter", {
     setup: function () {
       fx["root"] = new Env(
-        [symbol("male")],
-        [bool(true)]
+        [symbol("name"), symbol("male")],
+        [string("pg"), bool(true)]
       );
       fx["env"] = new Env(
         [symbol("name"), symbol("age")], 
@@ -107,16 +107,12 @@
     t.evl( '(set foo bar)', {err:"reference"} );
 
     t.evl( '(set name "Gandalf")', {env: fx.env, err: "none"});
+    t.evl( 'name', {env: fx.env, str: "Gandalf"} );
+    t.evl( 'name', {env: fx.root, str: "pg"} );
 
-    // var r1 = evaluate('(set name "Gandalf")', env);
-    // ok( r1.isNone() );
-    // eeq( env, 'name', string("Gandalf") );
-
-    // var r2 = evaluate('(set age 999)', env);
-    // ok( r2.isNone() );
-    // eeq( env, 'age', number(999) );
-    // eeq( env, 'name', string("Gandalf") );
-    // eeq( env, 'name', string("Gandalf") );
+    t.evl( '(set male false)', {env: fx.env, err: "none"} );
+    t.evl( 'male', {env: fx.env, bool: false} );
+    t.evl( 'male', {env: fx.root, bool: false} );
   });
 
   test( "def form", function () {
