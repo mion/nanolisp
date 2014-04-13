@@ -113,12 +113,8 @@
     t.evl( 'name', {env: fx.root, str: "pg"} );
 
     t.evl( '(set male false)', {env: fx.env, err: "none"} );
-    t.evl( 'male', {env: fx.env, bool: false} );
-    t.evl( 'male', {env: fx.root, bool: false} );
     t.ref( fx.env, "male", {err: "reference"});
     t.ref( fx.root, "male", {bool: false});
-    // t.deepEqual( fx.env.get(symbol("male")), errorReference() );
-    // t.deepEqual( fx.root.get(symbol("male")), bool(false) );
   });
 
   test( "def form", function (t) {
@@ -132,8 +128,8 @@
     t.evl( 'name', {env: fx.root, str: "pg"} );
 
     t.evl( '(def male false)', {env: fx.env, err: "none"} );
-    equal( fx.env.get(symbol("male")), bool(false) );
-    equal( fx.root.get(symbol("male")), bool(true) );
+    t.ref( fx.env, "male", {bool: false} );
+    t.ref( fx.root, "male", {bool: true} );
   });
 
 })();

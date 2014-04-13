@@ -68,6 +68,10 @@ var compute = function(s, e) {
 
       if (!sym.isSymbol()) return errorType();
 
+      var computedExp = compute(exp, e);
+
+      if (computedExp.isError()) return computedExp;
+
       return e.set(sym, compute(exp, e));
     }
   } else {
