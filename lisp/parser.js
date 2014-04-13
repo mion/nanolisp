@@ -29,6 +29,26 @@ var atom = function (token) {
   return symbol(token);
 };
 
+var readFrom = function (tokens) {
+  if (tokens.length === 0) {
+    throw new SyntaxError("unexpected EOF while reading");
+  }
+
+  var token = tokens.shift();
+  if ("(" === token) {
+    var L = array([]);
+    while (tokens[0] !== ")") {
+      L.value.push(readFrom(tokens));
+    }
+    tokens.shift(); // remove ')'
+    return L;
+  } else if (")" === token) {
+    throw new SyntaxError("unexpected )");
+  } else {
+    return atom(token);
+  }
+};
+
 var parse = function (str) {
-  return error();
+  return readFrom(tokenize(str));
 };
