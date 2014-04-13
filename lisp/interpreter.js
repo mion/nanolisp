@@ -4,7 +4,7 @@ var globalEnv = new Env();
 
 // Evaluate an s-expression `s` in an environment `e`
 // NB: traditionally called "eval", avoid conflict with JavaScript's own eval
-function compute (s, e) { 
+var compute = function(s, e) { 
   assertDefined(s);
   assertInstanceOf(s, Sexp);
 
@@ -73,7 +73,7 @@ function compute (s, e) {
   } else {
     return s; // constant literal, error
   }
-}
+};
 
 var interpret = function (str) {
   return compute(parse(str));

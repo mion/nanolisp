@@ -1,6 +1,6 @@
 "use strict";
 
-function Env (parms, args, outer) {
+var Env = function (parms, args, outer) {
   this.outer = outer;
   var dict = {};
 
@@ -21,7 +21,7 @@ function Env (parms, args, outer) {
   }
 
   this.dict = dict;
-}
+};
 
 Env.prototype.get = function(parm) {
   assertDefined( parm ); 

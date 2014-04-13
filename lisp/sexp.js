@@ -1,9 +1,9 @@
 "use strict";
 
-function Sexp (type, value) {
+var Sexp = function (type, value) {
   this.type = type;
   this.value = value;
-}
+};
 
 Sexp.prototype.toString = function() {
   return sprintf("<type: %s, value: %s>", this.type, this.value.toString());
@@ -67,46 +67,46 @@ Sexp.prototype.rest = function() {
   }
 };
 
-function string (value) {
+var string = function (value) {
   return new Sexp("String", value);
-}
+};
 
-function number (value) {
+var number = function (value) {
   return new Sexp("Number", value);
-}
+};
 
-function array (value) {
+var array = function (value) {
   return new Sexp("Array", value);
-}
+};
 
-function symbol (value) {
+var symbol = function (value) {
   return new Sexp("Symbol", value);
-}
+};
 
-function bool (value) {
+var bool = function (value) {
   assert( value === true || value === false );
   return new Sexp("Bool", value);
-}
+};
 
-function none () {
+var none = function () {
   return new Sexp("None", null);
-}
+};
 
-function error (value) {
+var error = function (value) {
   return new Sexp("Error", value);
-}
+};
 
 // a symbol was not found in a certain Env
-function errorReference () {
+var errorReference = function () {
   return error("reference");
-}
+};
 
-// a list function was called on an atom (and vice-versa)
-function errorType () {
+// a list function called on an atom (and vice-versa)
+var errorType = function () {
   return error("type");
-}
+};
 
 // wrong number of arguments
-function errorArgument () {
+var errorArgument = function () {
   return error("argument");
-}
+};
