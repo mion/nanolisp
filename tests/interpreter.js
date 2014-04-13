@@ -187,8 +187,10 @@
     t.evl( '(do (def yes-no (fn (x) (if x "yes" "no"))) (yes-no true))', {env: fx.env, str: "yes"} );
   });
 
-  // test("standard lib", function (t) {
-  //   equal( evaluate('(+ 1 2)'), number(3) );
-  // });
+  test("standard lib", function (t) {
+    t.evl( '(+ 1 2)', {num: 3} );
+    t.evl( '(+ 1 2 3 4 5 6)', {num: 21} );
+    t.evl( '(* 1 2 3 4 5 6)', {num: 720} );
+  });
   
 })();

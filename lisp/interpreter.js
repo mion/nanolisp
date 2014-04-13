@@ -9,28 +9,22 @@ var makeLambda = function (env, name, opt, func) {
     var args = _.map(sexps.value, function (sexp) { return sexp.value; });
     var ret = func.apply(this, args);
 
-    var types = [
-      [ _.isNumber, number ],
-      [ _.isString, string ],
-      [ _.isBoolean, bool ],
-      [ _.isArray, array ]
-    ];
-    _.each(types, function (pair) {
-      var isType = pair[0],
-          toSexp = pair[1];
-
-      if (isType(ret)) return toSexp(ret);
-    });    
-    return errorType(); // TODO: dont know how to convert
+    if (_.isNumber(ret)) return number(ret);
+    else if (_.isString(ret)) return string(ret);
+    else if (_.isBoolean(ret)) return bool(ret);
+    else if (_.isArray(ret)) return array(ret);
+    else return errorType(); // TODO: dont know how to convert
   };
 
   env.dict[name] = lambda(wrapper);
 };
 makeLambda(global, "+", {}, function () {
-  return arguments[0] + arguments[1];
+  var args = Array.prototype.slice.call(arguments);
+  return _.reduce(args, function (m, x) { return m + x; }, 0);
 });
 makeLambda(global, "*", {}, function () {
-  return arguments[0] * arguments[1];
+  var args = Array.prototype.slice.call(arguments);
+  return _.reduce(args, function (m, x) { return m * x; }, 1);
 });
 
 // Evaluate an s-expression `s` in an environment `e`
