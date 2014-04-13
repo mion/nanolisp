@@ -24,13 +24,6 @@ var Env = function (parms, args, outer) {
   this.dict = dict;
 };
 
-// var mkEnv = function (obj, outer) {
-//   var parms = _.map(_.keys(obj), function(key) { symbol(key); });
-//   var args = _.values(obj);
-
-//   return new Env(parms, args, outer);
-// };
-
 Env.prototype.get = function(parm) {
   assertDefined( parm ); 
   assert( parm.isSymbol() );
