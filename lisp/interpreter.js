@@ -33,11 +33,6 @@ makeLambda(global, "*", {}, function () {
   return arguments[0] * arguments[1];
 });
 
-// var addGlobals = function (env) {
-//   env.dict["+"] = lambda(function(args) {    
-//   });
-// };
-
 // Evaluate an s-expression `s` in an environment `e`
 // NB: traditionally called "eval", avoid conflict with JavaScript's own eval
 var compute = function (s, e) { 
