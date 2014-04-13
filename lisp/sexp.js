@@ -5,6 +5,10 @@ function Sexp (type, value) {
   this.value = value;
 }
 
+Sexp.prototype.toString = function() {
+  return sprintf("<type: %s, value: %s>", this.type, this.value.toString());
+};
+
 Sexp.prototype.is = function(type) {
   return this.type === type;
 };
