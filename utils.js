@@ -24,6 +24,14 @@ Function.prototype.method = function (name, func) {
   }
 };
 
+Object.method('superior', function (name) {
+  var that = this,
+      method = that[name];
+  return function () {
+    return method.apply(that, arguments);
+  };
+});
+
 Number.method('integer', function () {
   return Math[this < 0 ? 'ceiling' : 'floor'](this);
 });
