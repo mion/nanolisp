@@ -7,20 +7,20 @@ test( "tokens", function () {
   deepEqual( tokenize(' (foo bar baz )'), ["(", "foo", "bar", "baz", ")"] );
 });
 
-test( "atoms", function () {
-  deepEqual( atom("0"), number(0) );
-  deepEqual( atom("-1"), number(-1) );
-  deepEqual( atom("+429"), number(429) );
+test( "atomize", function () {
+  deepEqual( atomize("0"), number(0) );
+  deepEqual( atomize("-1"), number(-1) );
+  deepEqual( atomize("+429"), number(429) );
 
-  deepEqual( atom("foo"), symbol("foo") );
+  deepEqual( atomize("foo"), symbol("foo") );
 
-  deepEqual( atom("\"foo\""), string("foo") );
-  deepEqual( atom("\"hello world\""), string("hello world") );
-  deepEqual( atom("\"f\""), string("f") );
-  deepEqual( atom("\"\""), string("") );
+  deepEqual( atomize("\"foo\""), string("foo") );
+  deepEqual( atomize("\"hello world\""), string("hello world") );
+  deepEqual( atomize("\"f\""), string("f") );
+  deepEqual( atomize("\"\""), string("") );
 
-  deepEqual( atom("true"), bool(true) );
-  deepEqual( atom("false"), bool(false) );
+  deepEqual( atomize("true"), bool(true) );
+  deepEqual( atomize("false"), bool(false) );
 });
 
 test( "parse", function () {

@@ -30,9 +30,13 @@ function compute (s, e) {
       var exp = s.at(1);
       return exp;
     } else if (first.value === "if") {
-      
+
     }
   } else {
     return s; // constant literal, error
   }
 }
+
+var interpret = function (str) {
+  return compute(parse(str));
+};

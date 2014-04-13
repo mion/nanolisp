@@ -11,7 +11,7 @@ var tokenize = function (str) {
             });
 };
 
-var atom = function (token) {
+var atomize = function (token) {
   if (token === "true") {
     return bool(true);
   }
@@ -45,7 +45,7 @@ var readFrom = function (tokens) {
   } else if (")" === token) {
     throw new SyntaxError("unexpected )");
   } else {
-    return atom(token);
+    return atomize(token);
   }
 };
 

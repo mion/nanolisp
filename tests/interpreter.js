@@ -27,24 +27,10 @@ test( "errors", function () {
 });
 
 test( "quote form", function () {
-  var s1 = array([
-    symbol("quote"),
-    number(1)
-  ]);
-
-  deepEqual( compute(s1), number(1) , "quote constant" );
-
-  var s2 = array([
-    symbol("quote"),
-    array([
-      string("universe"),
-      symbol("x"),
-      number(42)
-    ])
-  ]);
-
-  deepEqual( compute(s2), array([string("universe"), symbol("x"), number(42)]) );
-
+  deepEqual( interpret("(quote foo)"), parse("foo") );
+  deepEqual( interpret("(quote 1)"), parse("1") );
+  deepEqual( interpret("(quote (1 2 3))"), parse("(1 2 3)") );
+  deepEqual( interpret('(quote ("hello world" foo -25))'), parse('("hello world" foo -25)') );
   // TODO: (quote), (quote 1 2 3) => argument error
 });
 
