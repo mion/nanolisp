@@ -16,7 +16,7 @@ test( "variable reference", function () {
 
   deepEqual( compute(symbol("one"), env), number(1) );
   deepEqual( compute(symbol("two"), env), number(2) );
-  deepEqual( compute(symbol("apple"), env), errorUnknownSymbol() );
+  deepEqual( compute(symbol("apple"), env), errorReference() );
   deepEqual( compute(symbol("three"), env), number(3) );
 });
 
@@ -44,6 +44,6 @@ test( "quote", function () {
   ]);
 
   deepEqual( compute(s2), array([string("universe"), symbol("x"), number(42)]) );
-  
+
   // TODO: (quote), (quote 1 2 3) => argument error
 });

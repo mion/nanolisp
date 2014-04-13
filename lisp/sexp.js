@@ -82,8 +82,8 @@ function error (value) {
 }
 
 // a symbol was not found in a certain Env
-function errorUnknownSymbol () {
-  return error("unknown symbol");
+function errorReference () {
+  return error("reference");
 }
 
 // a list function was called on an atom (and vice-versa)

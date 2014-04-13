@@ -10,16 +10,14 @@ function compute (s, e) {
 
   e = e || globalEnv;
  
-  if (s.isString() || s.isNumber()) { // constant literal
-    return s;
-  } else if (s.isSymbol()) { // variable reference
+  if (s.isSymbol()) { // variable reference
     var env = e.find(s.value);
 
     if (env !== null) {
       var sexp = env.get(s.value); 
       return sexp;
     } else {
-      return errorUnknownSymbol();
+      return errorReference();
     }
   } else if (s.isArray()) { // interpret is as a form
     var first = s.first();
@@ -33,8 +31,6 @@ function compute (s, e) {
       return exp;
     }
   } else {
-    // TODO: what should we do here?
-    // return errorType();
-    throw new TypeError("s-expression has type: " + s.type);
+    return s; // constant literal, error
   }
 }
