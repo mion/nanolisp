@@ -19,3 +19,29 @@ test( "variable reference", function () {
   deepEqual( compute(symbol("apple"), env), errorUnknownSymbol() );
   deepEqual( compute(symbol("three"), env), number(3) );
 });
+
+test( "errors", function () { 
+  var s1 = array([number(1), number(2)]);
+
+  deepEqual( compute(s1), errorType() , "first element must be a symbol");
+});
+
+test( "quote", function () {
+  var s1 = array([
+    symbol("quote"),
+    number(1)
+  ]);
+
+  deepEqual( compute(s1), number(1) , "quote constant" );
+
+  var s2 = array([
+    symbol("quote"),
+    array([
+      string("universe"),
+      symbol("x"),
+      number(42)
+    ])
+  ]);
+
+  deepEqual( compute(s2), array([string("universe"), symbol("x"), number(42)]) );
+});

@@ -38,10 +38,12 @@ test( "equality", function () {
   ok( !ary4.equal(ary1) );
 });
 
-test("first, rest", function () {
+test("first, rest, at", function () {
   var s1 = array([number(1), number(2), number(3)]);
 
   deepEqual( s1.first(), number(1) );
+  deepEqual( s1.at(1), number(2) );
+  deepEqual( s1.at(2), number(3) );
   deepEqual( s1.rest(), array([number(2), number(3)]) );
 
   var s2 = string("hi");

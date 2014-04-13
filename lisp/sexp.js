@@ -41,12 +41,16 @@ Sexp.prototype.equal = function(sexp) {
   }
 };
 
-Sexp.prototype.first = function() {
+Sexp.prototype.at = function(index) {
   if (this.isArray()) {
-    return this.value[0];
+    return this.value[index];
   } else {
     return errorType();
   }
+};
+
+Sexp.prototype.first = function() {
+  return this.at(0);
 };
 
 Sexp.prototype.rest = function() {
@@ -77,10 +81,12 @@ function error (value) {
   return new Sexp("Error", value);
 }
 
+// a symbol was not found in a certain Env
 function errorUnknownSymbol () {
   return error("unknown symbol");
 }
 
+// a list function was called on an atom (and vice-versa)
 function errorType () {
   return error("type");
 }

@@ -21,9 +21,20 @@ function compute (s, e) {
     } else {
       return errorUnknownSymbol();
     }
-  } else if (s.isArray()) {
+  } else if (s.isArray()) { // interpret is as a form
+    var first = s.first();
+
+    // first element in a form must be a symbol
+    if (!first.isSymbol()) return errorType(); 
+
+    // (quote exp) => exp
+    if (first.value === "quote") {
+      var exp = s.rest();
+      return exp;
+    }
   } else {
-    // TODO: what about Error types?
+    // TODO: what should we do here?
+    // return errorType();
     throw new TypeError("s-expression has type: " + s.type);
   }
 }
