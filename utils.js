@@ -2,14 +2,14 @@ var print = function (msg) {
   console.log("[*] " + msg);
 };
 
-var assert = function (x) {
-  if (!x) {
-    throw new Error("assertion failed");
-  }
-};
+if (typeof Object.create !== 'function') {
+  Object.create = function (o) {
+    var F = function () {};
+    F.prototype = o;
+    return new F();
+  };
+}
 
-// AUGMENTATION
-// by Douglas Crockford
 Function.prototype.method = function (name, func) {
   if (!this.prototype[name]) {
     this.prototype[name] = func;
