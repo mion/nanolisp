@@ -1,6 +1,27 @@
 (function () { 
   "use strict";
 
+  QUnit.assert.evl = function(options) {
+    var sexp = evaluate(options.exp, options.env);
+    var sexpExpected = null;
+    if (options.str) { sexpExpected = string(options.str); }
+    if (options.num) { sexpExpected = number(options.num); }
+    if (options.sym) { sexpExpected = symbol(options.sym); }
+    if (options.err) { sexpExpected = error(options.err); }
+    if (options.bool) { sexpExpected = bool(options.bool); }
+
+    var result = sexp.equal(sexpExpected);
+    var msg = null;
+
+    if (options.env) {
+      msg = sprintf("evalute('%s', %s) equal to %s", options.exp, options.env.toString(), sexpExpected.toString());
+    } else { 
+      msg = sprintf("evalute('%s') equal to %s", options.exp, sexpExpected.toString());
+    }
+
+    QUnit.push(result, sexp, sexpExpected, msg);
+  };
+
   var eq = deepEqual;
   var ieq = function (str, outcome, msg) {
     return eq( evaluate(str), outcome, msg );
@@ -17,14 +38,37 @@
     return env;
   };
 
-  module( "interpreter" );
+  var fx = {};
+  // t.str1 = string("hello");
+  // t.str2 = string("hi");
+  // t.str3 = string("bye");
 
-  test( "constant literals", function () {
-    var sexpResult1 = compute(string("hello"));
-    ok( string("hello").equal(sexpResult1) );
+  // t.sym1 = symbol("foo");
+  // t.sym2 = symbol("bar");
+  // t.sym3 = symbol("baz");
 
-    var sexpResult2 = compute(number(3));
-    ok( number(3).equal(sexpResult2) );
+  // t.num1 = number(1);
+  // t.num2 = number(2);
+  // t.num3 = number(3);
+
+  module( "interpreter", {
+    setup: function () {
+      fx["env"] = new Env(
+        [symbol("name"), symbol("age"), symbol("male")], 
+        [string("mion"), number(23), bool(true)]
+      );
+    },
+    teardown: function () {
+      delete fx["env"]; 
+    }
+  });
+
+  test( "constant literals", function (assert) {
+    assert.evl({exp: '"hello"', str: "hello"});
+    assert.evl({exp: '3', num: 3 });
+    assert.evl({exp: '-2', num: -2 });
+    assert.evl({exp: 'foo', err: "reference" });
+    assert.evl({exp: 'name', env: fx.env, str: "mion" });
   });
 
   test( "variable reference", function () {
