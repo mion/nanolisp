@@ -1,39 +1,45 @@
-"use strict";
+(function () { 
+  "use strict";
 
-module( "interpreter" );
+  var eq = deepEqual;
 
-test( "constant literals", function () {
-  var sexpResult1 = compute(string("hello"));
-  ok( string("hello").equal(sexpResult1) );
+  module( "interpreter" );
 
-  var sexpResult2 = compute(number(3));
-  ok( number(3).equal(sexpResult2) );
-});
+  test( "constant literals", function () {
+    var sexpResult1 = compute(string("hello"));
+    ok( string("hello").equal(sexpResult1) );
 
-test( "variable reference", function () {
-  var root = new Env(["three"], [number(3)]);
-  var env = new Env(["one", "two"], [number(1), number(2)], root);
+    var sexpResult2 = compute(number(3));
+    ok( number(3).equal(sexpResult2) );
+  });
 
-  deepEqual( compute(symbol("one"), env), number(1) );
-  deepEqual( compute(symbol("two"), env), number(2) );
-  deepEqual( compute(symbol("apple"), env), errorReference() );
-  deepEqual( compute(symbol("three"), env), number(3) );
-});
+  test( "variable reference", function () {
+    var root = new Env(["three"], [number(3)]);
+    var env = new Env(["one", "two"], [number(1), number(2)], root);
 
-test( "errors", function () { 
-  var s1 = array([number(1), number(2)]);
+    eq( compute(symbol("one"), env), number(1) );
+    eq( compute(symbol("two"), env), number(2) );
+    eq( compute(symbol("apple"), env), errorReference() );
+    eq( compute(symbol("three"), env), number(3) );
+  });
 
-  deepEqual( compute(s1), errorType() , "first element must be a symbol");
-});
+  test( "errors", function () { 
+    var s1 = array([number(1), number(2)]);
 
-test( "quote form", function () {
-  deepEqual( interpret("(quote foo)"), parse("foo") );
-  deepEqual( interpret("(quote 1)"), parse("1") );
-  deepEqual( interpret("(quote (1 2 3))"), parse("(1 2 3)") );
-  deepEqual( interpret('(quote ("hello world" foo -25))'), parse('("hello world" foo -25)') );
-  // TODO: (quote), (quote 1 2 3) => argument error
-});
+    eq( compute(s1), errorType() , "first element must be a symbol");
+  });
 
-test( "if form", function () {
-  ok( true );
-});
+  test( "quote form", function () {
+    eq( interpret("(quote foo)"), parse("foo") );
+    eq( interpret("(quote 1)"), parse("1") );
+    eq( interpret("(quote (1 2 3))"), parse("(1 2 3)") );
+    eq( interpret('(quote ("hello world" foo -25))'), parse('("hello world" foo -25)') );
+    // TODO: (quote), (quote 1 2 3) => argument error
+  });
+
+  test( "if form", function () {
+    // eq( interpret("("), )
+    ok(true);
+  });
+
+})();
