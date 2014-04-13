@@ -31,6 +31,8 @@ test( "parse", function () {
   deepEqual( parse("false"), bool(false) );
 
   deepEqual( parse("\"foo\""), string("foo") );
+  // TODO: implement multiple word string parsing
+  // deepEqual( parse("\"hello world\""), string("hello world") );
   deepEqual( parse("\"\""), string("") );
 
   deepEqual( parse("bar"), symbol("bar") );

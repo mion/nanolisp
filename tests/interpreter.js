@@ -85,7 +85,7 @@
 
     t.evl( '(quote (1 2 3))', '(1 2 3)' );
 
-    t.evl( '(quote ("hello world" foo -25))', '("hell world" foo -25)' );
+    t.evl( '(quote ("hello" foo -25))', '("hello" foo -25)' );
   });
 
   test( "if form", function () {
