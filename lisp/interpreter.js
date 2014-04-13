@@ -75,6 +75,6 @@ var compute = function(s, e) {
   }
 };
 
-var interpret = function (str) {
-  return compute(parse(str));
+var interpret = function (str, env) {
+  return compute(parse(str), env);
 };

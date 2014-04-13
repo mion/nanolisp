@@ -5,6 +5,16 @@
   var ieq = function (str, outcome, msg) {
     return eq( interpret(str), outcome, msg );
   };
+  var eeq = function (env, name, exp, msg) {
+    return eq( env.find(name).get(name), exp, msg );
+  };
+
+  var mkenv = function (dict, outer) {
+    var env = new Env(null, null, outer);
+    env.dict = dict;
+
+    return env;
+  };
 
   module( "interpreter" );
 
@@ -61,18 +71,18 @@
     ieq( '(set 1 "hi")', errorType() );
     ieq( '(set foo bar)', errorReference() );
 
-    var env = new Env(['name', 'age'], ["Gabriel", 23]),
-        s1 = parse('(set name "Gandalf")'),
-        s2 = parse('(set age 999)');
+    // var env = new Env(['name', 'age'], ["Gabriel", 23]);
+    var env = mkenv({name: "Gabriel", age: 23});
 
-    var r1 = compute(s1, env);
+    var r1 = compute(parse('(set name "Gandalf")'), env);
     ok( r1.isNone() );
     eq( env.find('name').get('name'), string("Gandalf") );
 
-    var r2 = compute(s2, env);
+    var r2 = compute(parse('(set age 999)'), env);
     ok( r2.isNone() );
-    eq( env.find('age').get('age'), number(999) );
-    eq( env.find('name').get('name'), string("Gandalf") );
+    eeq( env, 'age', number(999) );
+    eeq( env, 'name', string("Gandalf") );
+    eeq( env, 'name', string("Gandalf") );
   });
 
   test( "def form", function () {
