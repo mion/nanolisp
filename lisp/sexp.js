@@ -18,6 +18,7 @@ Sexp.prototype.isString = function() { return this.is("String"); };
 Sexp.prototype.isSymbol = function() { return this.is("Symbol"); };
 Sexp.prototype.isArray = function() { return this.is("Array"); };
 Sexp.prototype.isBool = function() { return this.is("Bool"); };
+Sexp.prototype.isLambda = function() { return this.is("Lambda"); };
 Sexp.prototype.isError = function() { return this.is("Error"); };
 
 Sexp.prototype.ok = function() {
@@ -91,6 +92,10 @@ var symbol = function (value) {
 var bool = function (value) {
   assert( value === true || value === false );
   return new Sexp("Bool", value);
+};
+
+var lambda = function (value) {
+  return new Sexp("Lambda", value);
 };
 
 var error = function (value) {

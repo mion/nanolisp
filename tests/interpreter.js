@@ -2,20 +2,27 @@
   "use strict";
 
   QUnit.assert.evl = function(exp, options) {
-    var sexp = evaluate(exp, options.env);
+    var env = options.env;
     var sexpExpected = null;
+
     if (_.has(options, "str")) { sexpExpected = string(options.str); }
     else if (_.has(options, "num")) { sexpExpected = number(options.num); }
     else if (_.has(options, "sym")) { sexpExpected = symbol(options.sym); }
     else if (_.has(options, "err")) { sexpExpected = error(options.err); }
     else if (_.has(options, "bool")) { sexpExpected = bool(options.bool); }
-    else { sexpExpected = parse(options); }
+    else { 
+      sexpExpected = parse(options); 
+      if (arguments.length >= 3) {
+        env = arguments[2];
+      }
+    }
 
+    var sexp = evaluate(exp, env);
     var result = sexp.equal(sexpExpected);
     var msg = null;
 
-    if (options.env) {
-      msg = sprintf("%s (Env: %s) => %s", exp, options.env.toString(), sexpExpected.toString());
+    if (env) {
+      msg = sprintf("%s (Env: %s) => %s", exp, env.toString(), sexpExpected.toString());
     } else { 
       msg = sprintf("%s => %s", exp, sexpExpected.toString());
     }
@@ -100,11 +107,14 @@
 
     t.evl( '(if true foo 123)', {err: "reference"} );
     t.evl( '(if false foo 123)', {num: 123} );
+
+    t.evl( '(if male "boy" "girl")', '"boy"', fx.env );
   });
 
   test( "set form", function (t) {
     t.evl( '(set)', {err:"argument"} );
     t.evl( '(set foo)', {err:"argument"} );
+    t.evl( '(set foo bar baz)', {err:"argument"} );
     t.evl( '(set 1 "hi")', {err:"type"} );
     t.evl( '(set foo bar)', {err:"reference"} );
 
@@ -120,6 +130,7 @@
   test( "def form", function (t) {
     t.evl( '(def)', {err:"argument"} );
     t.evl( '(def foo)', {err:"argument"} );
+    t.evl( '(def foo bar baz)', {err:"argument"} );
     t.evl( '(def 1 "hi")', {err:"type"} );
     t.evl( '(def foo bar)', {err:"reference"} );
 
@@ -130,6 +141,18 @@
     t.evl( '(def male false)', {env: fx.env, err: "none"} );
     t.ref( fx.env, "male", {bool: false} );
     t.ref( fx.root, "male", {bool: true} );
+  });
+
+  test( "fn form", function (t) {
+    t.evl( '(fn)', {err:"argument"} );
+    t.evl( '(fn foo)', {err:"argument"} );
+    t.evl( '(fn foo bar baz)', {err:"argument"} );
+    t.evl( '(fn 1 "hi")', {err:"type"} );
+    t.evl( '(fn (x y 5 z) (+ x y z))', {err:"type"} );
+
+    var e = new Env();
+    t.evl( '(def id (fn (x) x))', {env: e, err: "none"} );
+    eq( e.get(symbol("id")).value(array([number(123)])), number(123) );
   });
 
 })();

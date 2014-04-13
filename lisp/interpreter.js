@@ -73,6 +73,26 @@ var compute = function(s, e) {
       if (computedExp.isError()) return computedExp;
 
       return e.set(sym, compute(exp, e));
+    } else if (first.value === "fn") { // (fn (var*) exp)
+      if (s.value.length !== 3) return errorArgument();
+
+      var parms = s.at(1),
+          exp = s.at(2);
+
+      if (!parms.isArray()) return errorType();
+      if (!parms.value.every(function (sexp) { return sexp.isSymbol(); })) return errorType();
+
+      return lambda(function(args) {
+        console.log(exp);
+        console.log(parms);
+        console.log(args);
+        console.log(e);
+        // var args = [];
+        // for (var i = 0; i < arguments.length; i++) {
+        //   args[i] = arguments[i];
+        // };
+        return compute(exp, new Env(parms.value, args.value, e));
+      });
     }
   } else {
     return s; // constant literal, error

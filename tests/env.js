@@ -3,6 +3,7 @@
 module( "Env" );
 
 test( "new, get and set", function() {
+  // [!] Env receives JS Arrays not our "array": rename this to list or something
   var env = new Env([symbol("a"), symbol("b")], [number(1), number(2)]);
 
   deepEqual( env.get(symbol("a")), number(1) );
