@@ -21,23 +21,25 @@
     }
 
     QUnit.push(result, sexp, sexpExpected, msg);
+  };  
+
+  QUnit.assert.ref = function(env, name, options) {
+    var sexp = env.get(symbol(name));
+    var sexpExpected = null;
+    if (_.has(options, "str")) { sexpExpected = string(options.str); }
+    else if (_.has(options, "num")) { sexpExpected = number(options.num); }
+    else if (_.has(options, "sym")) { sexpExpected = symbol(options.sym); }
+    else if (_.has(options, "err")) { sexpExpected = error(options.err); }
+    else if (_.has(options, "bool")) { sexpExpected = bool(options.bool); }
+    else { sexpExpected = parse(options); }
+
+    var result = sexp.equal(sexpExpected);
+    var msg = sprintf("Env[:%s] => %s", name, sexpExpected.toString());
+
+    QUnit.push(result, sexp, sexpExpected, msg);
   };
 
   var eq = deepEqual;
-  var ieq = function (str, outcome, msg) {
-    return eq( evaluate(str), outcome, msg );
-  };
-  var eeq = function (env, name, exp, msg) {
-    var sym = symbol(name);
-    return eq( env.find(sym).get(sym), exp, msg );
-  };
-
-  var mkenv = function (dict, outer) {
-    var env = new Env(null, null, outer);
-    env.dict = dict;
-
-    return env;
-  };
 
   var fx = {};
 
@@ -113,14 +115,25 @@
     t.evl( '(set male false)', {env: fx.env, err: "none"} );
     t.evl( 'male', {env: fx.env, bool: false} );
     t.evl( 'male', {env: fx.root, bool: false} );
+    t.ref( fx.env, "male", {err: "reference"});
+    t.ref( fx.root, "male", {bool: false});
+    // t.deepEqual( fx.env.get(symbol("male")), errorReference() );
+    // t.deepEqual( fx.root.get(symbol("male")), bool(false) );
   });
 
-  test( "def form", function () {
-    ok(true);
-    // ieq( '(def)', errorArgument() );
-    // ieq( '(def foo)', errorArgument() );
-    // ieq( '(def 1 bar)', {err:"type"} );
-    // ieq( '(def foo bar)', {err:"reference"} );
+  test( "def form", function (t) {
+    t.evl( '(def)', {err:"argument"} );
+    t.evl( '(def foo)', {err:"argument"} );
+    t.evl( '(def 1 "hi")', {err:"type"} );
+    t.evl( '(def foo bar)', {err:"reference"} );
+
+    t.evl( '(def name "Gandalf")', {env: fx.env, err: "none"});
+    t.evl( 'name', {env: fx.env, str: "Gandalf"} );
+    t.evl( 'name', {env: fx.root, str: "pg"} );
+
+    t.evl( '(def male false)', {env: fx.env, err: "none"} );
+    equal( fx.env.get(symbol("male")), bool(false) );
+    equal( fx.root.get(symbol("male")), bool(true) );
   });
 
 })();
