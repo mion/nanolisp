@@ -6,7 +6,8 @@
     return eq( evaluate(str), outcome, msg );
   };
   var eeq = function (env, name, exp, msg) {
-    return eq( env.find(name).get(name), exp, msg );
+    var sym = symbol(name);
+    return eq( env.find(sym).get(sym), exp, msg );
   };
 
   var mkenv = function (dict, outer) {
@@ -27,8 +28,8 @@
   });
 
   test( "variable reference", function () {
-    var root = new Env(["three"], [number(3)]);
-    var env = new Env(["one", "two"], [number(1), number(2)], root);
+    var root = new Env([symbol("three")], [number(3)]);
+    var env = new Env([symbol("one"), symbol("two")], [number(1), number(2)], root);
 
     eq( compute(symbol("one"), env), number(1) );
     eq( compute(symbol("two"), env), number(2) );
@@ -71,8 +72,7 @@
     ieq( '(set 1 "hi")', errorType() );
     ieq( '(set foo bar)', errorReference() );
 
-    // var env = new Env(['name', 'age'], ["Gabriel", 23]);
-    var env = mkenv({name: "Gabriel", age: 23});
+    var env = new Env([symbol('name'), symbol('age')], [string("Gabriel"), number(23)]);
 
     eq( evaluate('(set name foo)', env), errorReference() );
 

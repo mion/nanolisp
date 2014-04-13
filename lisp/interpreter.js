@@ -11,13 +11,13 @@ var compute = function(s, e) {
   e = e || globalEnv;
  
   if (s.isSymbol()) { // variable reference
-    var env = e.find(s.value);
+    var env = e.find(s);
 
-    if (env !== null) {
-      var sexp = env.get(s.value); 
+    if (env instanceof Env) { // FIXME
+      var sexp = env.get(s); 
       return sexp;
     } else {
-      return errorReference();
+      return env; 
     }
   } else if (s.isArray()) { // compute it as a form
     var first = s.first();
@@ -51,7 +51,7 @@ var compute = function(s, e) {
 
       if (!sym.isSymbol()) return errorType();
 
-      var env = e.find(sym.value);
+      var env = e.find(sym);
 
       if (env === null) return errorReference();
 
@@ -59,9 +59,7 @@ var compute = function(s, e) {
 
       if (computedExp.isError()) return computedExp;
 
-      env.set(sym.value, computedExp);
-
-      return none();
+      return env.set(sym, computedExp);
     } else if (first.value === "def") { // (def var exp)
       if (s.value.length !== 3) return errorArgument();
 
@@ -70,9 +68,7 @@ var compute = function(s, e) {
 
       if (!sym.isSymbol()) return errorType();
 
-      e.set(sym.value, compute(exp, e));
-
-      return none();
+      return e.set(sym, compute(exp, e));
     }
   } else {
     return s; // constant literal, error
