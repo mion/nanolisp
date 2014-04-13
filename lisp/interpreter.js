@@ -24,15 +24,25 @@ function compute (s, e) {
 
     // first element in a form must be a symbol
     if (!first.isSymbol()) return errorType(); 
-
-    // (quote exp) => exp
-    if (first.value === "quote") {
+  
+    // forms
+    if (first.value === "quote") { // (quote exp)
       if (s.value.length !== 2) return errorArgument();
-      
+
       var exp = s.at(1);
       return exp;
-    } else if (first.value === "if") {
+    } else if (first.value === "if") { // (if cond conseq alt)
+      if (s.value.length !== 4) return errorArgument();
 
+      var condition = compute(s.at(1), e);
+
+      if (!condition.isBool()) return errorType();
+
+      if (condition.value) {
+        return compute(s.at(2), e);
+      } else {
+        return compute(s.at(3), e);
+      }
     }
   } else {
     return s; // constant literal, error

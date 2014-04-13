@@ -30,17 +30,20 @@
   });
 
   test( "quote form", function () {
+    eq( interpret('(quote)'), errorArgument() );
+    eq( interpret('(quote foo bar)'), errorArgument() );
+
     eq( interpret("(quote foo)"), parse("foo") );
     eq( interpret("(quote 1)"), parse("1") );
 
     eq( interpret("(quote (1 2 3))"), parse("(1 2 3)") );
     eq( interpret('(quote ("hello world" foo -25))'), parse('("hello world" foo -25)') );
-    
-    eq( interpret('(quote)'), errorArgument() );
-    eq( interpret('(quote foo bar)'), errorArgument() );
   });
 
   test( "if form", function () {
+    eq( interpret('(if)'), errorArgument() );
+    eq( interpret('(if 1)'), errorArgument() );
+
     eq( interpret('(if true "yes" "no")'), parse('"yes"') );
     eq( interpret('(if false "yes" 123)'), parse('123') );
   });
