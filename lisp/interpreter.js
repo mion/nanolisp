@@ -96,6 +96,15 @@ var compute = function(s, e) {
       });
 
       return val;
+    } else { // (proc exp*)
+      var exps = s.value.map(function (sexp) {
+        return compute(sexp, e);
+      });
+
+      var proc = exps.shift();
+      var sexps = array(exps);
+
+      return proc.value(sexps);
     }
   } else {
     return s; // constant literal, error
