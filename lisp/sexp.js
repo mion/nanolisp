@@ -21,7 +21,7 @@ Sexp.prototype.equal = function(sexp) {
   if (!this.is(sexp.type)) {
     return false;
   } else {
-    if (this.is("Array")) {
+    if (this.isArray()) {
       if (this.value.length != sexp.value.length) { return false; }
 
       for (var i = 0; i < this.value.length; i++) {
@@ -42,7 +42,7 @@ Sexp.prototype.equal = function(sexp) {
 };
 
 Sexp.prototype.first = function() {
-  if (this.is("Array")) {
+  if (this.isArray()) {
     return this.value[0];
   } else {
     return errorType();
@@ -50,7 +50,7 @@ Sexp.prototype.first = function() {
 };
 
 Sexp.prototype.rest = function() {
-  if (this.is("Array")) {
+  if (this.isArray()) {
     return array( this.value.slice(1, this.value.length) );
   } else {
     return errorType();
