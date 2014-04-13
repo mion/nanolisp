@@ -38,7 +38,7 @@ test( "equality", function () {
   ok( !ary4.equal(ary1) );
 });
 
-test("first, rest, at", function () {
+test("list methods", function () {
   var s1 = array([number(1), number(2), number(3)]);
 
   deepEqual( s1.first(), number(1) );

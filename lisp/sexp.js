@@ -100,3 +100,8 @@ function errorReference () {
 function errorType () {
   return error("type");
 }
+
+// wrong number of arguments
+function errorArgument () {
+  return error("argument");
+}

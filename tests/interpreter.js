@@ -32,14 +32,17 @@
   test( "quote form", function () {
     eq( interpret("(quote foo)"), parse("foo") );
     eq( interpret("(quote 1)"), parse("1") );
+
     eq( interpret("(quote (1 2 3))"), parse("(1 2 3)") );
     eq( interpret('(quote ("hello world" foo -25))'), parse('("hello world" foo -25)') );
-    // TODO: (quote), (quote 1 2 3) => argument error
+    
+    eq( interpret('(quote)'), errorArgument() );
+    eq( interpret('(quote foo bar)'), errorArgument() );
   });
 
   test( "if form", function () {
-    // eq( interpret("("), )
-    ok(true);
+    eq( interpret('(if true "yes" "no")'), parse('"yes"') );
+    eq( interpret('(if false "yes" 123)'), parse('123') );
   });
 
 })();
