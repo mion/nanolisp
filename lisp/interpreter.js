@@ -43,6 +43,7 @@ function compute (s, e) {
       } else {
         return compute(s.at(3), e);
       }
+    } else if (first.value === "set") { // (set var exp)
     }
   } else {
     return s; // constant literal, error

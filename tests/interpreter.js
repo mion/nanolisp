@@ -42,10 +42,14 @@
 
   test( "if form", function () {
     eq( interpret('(if)'), errorArgument() );
-    eq( interpret('(if 1)'), errorArgument() );
+    eq( interpret('(if true "hi")'), errorArgument(), "if takes 4 arguments" );
+    eq( interpret('(if 1 "y" "n")'), errorType(), "if condition must be true/false" );
 
     eq( interpret('(if true "yes" "no")'), parse('"yes"') );
     eq( interpret('(if false "yes" 123)'), parse('123') );
+
+    eq( interpret('(if true foo 123)'), errorReference() );
+    eq( interpret('(if false foo 123)'), parse('123') );
   });
 
 })();
