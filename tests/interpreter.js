@@ -5,18 +5,19 @@
     var sexp = evaluate(exp, options.env);
     var sexpExpected = null;
     if (options.str) { sexpExpected = string(options.str); }
-    if (options.num) { sexpExpected = number(options.num); }
-    if (options.sym) { sexpExpected = symbol(options.sym); }
-    if (options.err) { sexpExpected = error(options.err); }
-    if (options.bool) { sexpExpected = bool(options.bool); }
+    else if (options.num) { sexpExpected = number(options.num); }
+    else if (options.sym) { sexpExpected = symbol(options.sym); }
+    else if (options.err) { sexpExpected = error(options.err); }
+    else if (options.bool) { sexpExpected = bool(options.bool); }
+    else { sexpExpected = parse(options); }
 
     var result = sexp.equal(sexpExpected);
     var msg = null;
 
     if (options.env) {
-      msg = sprintf("evalute('%s', %s) equal to %s", exp, options.env.toString(), sexpExpected.toString());
+      msg = sprintf("%s (Env: %s) => %s", exp, options.env.toString(), sexpExpected.toString());
     } else { 
-      msg = sprintf("evalute('%s') equal to %s", exp, sexpExpected.toString());
+      msg = sprintf("%s => %s", exp, sexpExpected.toString());
     }
 
     QUnit.push(result, sexp, sexpExpected, msg);
@@ -65,26 +66,26 @@
   });
 
   test( "variable reference", function (t) {
-    t.evl('foo', {err: "reference"});
-    t.evl('name', {env: fx.env, str: "mion"});
-    t.evl('male', {env: fx.env, bool: true});
+    t.evl( 'foo', {err: "reference"} );
+    t.evl( 'name', {env: fx.env, str: "mion"} );
+    t.evl( 'male', {env: fx.env, bool: true} );
   });
 
-  test( "errors", function () { 
-    var s1 = array([number(1), number(2)]);
-
-    eq( compute(s1), errorType() , "first element must be a symbol");
+  test( "errors", function (t) { 
+    t.evl( '(1 2)', {err: "type"} );
   });
 
-  test( "quote form", function () {
-    eq( evaluate('(quote)'), errorArgument() );
-    eq( evaluate('(quote foo bar)'), errorArgument() );
+  test( "quote form", function (t) {
+    t.evl( '(quote)', {err: "argument"} );
+    t.evl( '(quote foo bar)', {err: "argument"} );
 
-    eq( evaluate("(quote foo)"), parse("foo") );
-    eq( evaluate("(quote 1)"), parse("1") );
+    t.evl( '(quote foo)', {sym: "foo"} );
+    t.evl( '(quote 1)', {num: 1} );
+    t.evl( '(quote -429)', {num: -429} );
 
-    eq( evaluate("(quote (1 2 3))"), parse("(1 2 3)") );
-    eq( evaluate('(quote ("hello world" foo -25))'), parse('("hello world" foo -25)') );
+    t.evl( '(quote (1 2 3))', '(1 2 3)' );
+
+    t.evl( '(quote ("hello world" foo -25))', '("hell world" foo -25)' );
   });
 
   test( "if form", function () {
