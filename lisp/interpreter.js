@@ -56,7 +56,18 @@ function compute (s, e) {
       if (env === null) return errorReference();
 
       env.set(sym.value, compute(exp, e));
-      
+
+      return none();
+    } else if (first.value === "def") { // (def var exp)
+      if (s.value.length !== 3) return errorArgument();
+
+      var sym = s.at(1),
+          exp = s.at(2);
+
+      if (!sym.isSymbol()) return errorType();
+
+      e.set(sym.value, compute(exp, e));
+
       return none();
     }
   } else {

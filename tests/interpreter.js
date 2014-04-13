@@ -75,4 +75,11 @@
     eq( env.find('name').get('name'), string("Gandalf") );
   });
 
+  test( "def form", function () {
+    ieq( '(def)', errorArgument() );
+    ieq( '(def foo)', errorArgument() );
+    ieq( '(def 1 bar)', errorType() );
+    // ieq( '(def foo bar)', errorReference() );
+  });
+
 })();
