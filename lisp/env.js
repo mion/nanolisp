@@ -5,17 +5,9 @@ var Env = function (parms, args, outer) {
   var dict = {};
 
   if (parms && args) {
-    // assertArray(parms);
-    // assertArray(args);
-    // assertEqual( parms.length, args.length );
-
     _.zip(parms, args).forEach(function (parm_arg) {
       var parm = parm_arg[0];
       var arg = parm_arg[1];
-
-      // assertDefined( parm );
-      // assertDefined( arg );
-      // assert( parm.isSymbol() );
 
       dict[parm.value] = arg;
     });

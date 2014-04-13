@@ -2,6 +2,12 @@ var print = function (msg) {
   console.log("[*] " + msg);
 };
 
+var assert = function (exp) {
+  if (!exp) {
+    throw new Error("assertion failed");
+  }
+};
+
 if (typeof Object.create !== 'function') {
   Object.create = function (o) {
     var F = function () {};
