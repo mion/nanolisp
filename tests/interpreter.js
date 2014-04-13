@@ -74,9 +74,9 @@
     // var env = new Env(['name', 'age'], ["Gabriel", 23]);
     var env = mkenv({name: "Gabriel", age: 23});
 
-    var r1 = compute(parse('(set name "Gandalf")'), env);
+    var r1 = evaluate('(set name "Gandalf")', env);
     ok( r1.isNone() );
-    eq( env.find('name').get('name'), string("Gandalf") );
+    eeq( env, 'name', string("Gandalf") );
 
     var r2 = compute(parse('(set age 999)'), env);
     ok( r2.isNone() );
