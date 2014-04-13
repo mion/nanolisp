@@ -39,7 +39,7 @@ Env.prototype.set = function(sym, sexp) {
   assert( sym.isSymbol() );
   assertDefined( sexp ); 
   this.dict[sym.value] = sexp;
-  return none();
+  return errorNone();
 };
 
 Env.prototype.find = function(sym) {

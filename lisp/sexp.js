@@ -18,8 +18,13 @@ Sexp.prototype.isString = function() { return this.is("String"); };
 Sexp.prototype.isSymbol = function() { return this.is("Symbol"); };
 Sexp.prototype.isArray = function() { return this.is("Array"); };
 Sexp.prototype.isBool = function() { return this.is("Bool"); };
-Sexp.prototype.isNone = function() { return this.is("None"); };
 Sexp.prototype.isError = function() { return this.is("Error"); };
+
+Sexp.prototype.ok = function() {
+  if (this.isError()) {
+    return this.value === "none";
+  } else return true;
+};
 
 Sexp.prototype.equal = function(sexp) {
   assertDefined(sexp);
@@ -88,12 +93,12 @@ var bool = function (value) {
   return new Sexp("Bool", value);
 };
 
-var none = function () {
-  return new Sexp("None", null);
-};
-
 var error = function (value) {
   return new Sexp("Error", value);
+};
+
+var errorNone = function () {
+  return error("none");
 };
 
 // a symbol was not found in a certain Env

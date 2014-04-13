@@ -9,7 +9,7 @@ test( "new, get and set", function() {
   deepEqual( env.get(symbol("b")), number(2) );
   deepEqual( env.get(symbol("c")), errorReference() );
 
-  deepEqual( env.set(symbol("c"), number(3)), none() );
+  deepEqual( env.set(symbol("c"), number(3)), errorNone() );
   deepEqual( env.get(symbol("c")), number(3) );
 });
 
