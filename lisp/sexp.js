@@ -9,6 +9,12 @@ Sexp.prototype.is = function(type) {
   return this.type === type;
 };
 
+Sexp.prototype.isNumber = function() { return this.is("Number"); };
+Sexp.prototype.isString = function() { return this.is("String"); };
+Sexp.prototype.isSymbol = function() { return this.is("Symbol"); };
+Sexp.prototype.isArray = function() { return this.is("Array"); };
+Sexp.prototype.isError = function() { return this.is("Error"); };
+
 Sexp.prototype.equal = function(sexp) {
   assertDefined(sexp);
 

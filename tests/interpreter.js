@@ -11,8 +11,8 @@ test( "constant literals", function () {
 });
 
 test( "variable reference", function () {
-  var globalEnv = new Env(["three"], [number(3)]);
-  var env = new Env(["one", "two"], [number(1), number(2)], globalEnv);
+  var root = new Env(["three"], [number(3)]);
+  var env = new Env(["one", "two"], [number(1), number(2)], root);
 
   deepEqual( compute(symbol("one"), env), number(1) );
   deepEqual( compute(symbol("two"), env), number(2) );

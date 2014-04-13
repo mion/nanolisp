@@ -1,3 +1,5 @@
+"use strict";
+
 var globalEnv = new Env();
 
 // Evaluate an s-expression `s` in an environment `e`
@@ -8,9 +10,9 @@ function compute (s, e) {
 
   e = e || globalEnv;
  
-  if (s.is("String") || s.is("Number")) { // constant literal
+  if (s.isString() || s.isNumber()) { // constant literal
     return s;
-  } else if (s.is("Symbol")) { // variable reference
+  } else if (s.isSymbol()) { // variable reference
     var env = e.find(s.value);
 
     if (env !== null) {
@@ -19,7 +21,7 @@ function compute (s, e) {
     } else {
       return errorUnknownSymbol();
     }
-  } else if (s.is("Array")) {
+  } else if (s.isArray()) {
   } else {
     // TODO: what about Error types?
     throw new TypeError("s-expression has type: " + s.type);
