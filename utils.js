@@ -1,38 +1,38 @@
-function print (msg) {
+var print = function (msg) {
   console.log("[*] " + msg);
-}
+};
 
-function assert (x) {
+var assert = function (x) {
   if (!x) {
     throw new Error("assertion failed");
   }
-}
+};
 
-function assertDefined (x) {
+var assertDefined = function (x) {
   if (x == "undefined") {
     throw new Error("assertion failed: " + x + " is undefined");
   }
-}
+};
 
-function assertEqual (x, y) {
+var assertEqual = function (x, y) {
   if (x !== y) {
     throw new Error("assertion failed: " + x + " !== " + y);
   }
-}
+};
 
-function assertInstanceOf (x, proto) {
+var assertInstanceOf = function (x, proto) {
   if ( !(x instanceof proto) ) {
     throw new Error("assertion failed: " + x + " is not an instance of '" + proto + "'");
   }
-}
+};
 
-function assertArray (x) {
+var assertArray = function (x) {
   assertDefined(x);
   
   if (!_.isArray(x)) {
     throw new Error("assertion failed: " + x + "is not an Array");
   }
-}
+};
 
 ///////// POLYFILLS
 
