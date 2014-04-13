@@ -1,6 +1,16 @@
 (function () {
   "use strict";
 
+  function equalSexp (s1, s2) {
+    if (s1.equal(s2)) {
+      ok( true );
+    } else {
+      console.log(s1);
+      console.log(s2);
+      ok( false );
+    }
+  }
+
   // QUnit.assert.equalSexp = function( sexp1, sexp2, message ) {
   //   var result = false;
 
@@ -87,16 +97,15 @@
   });
 
   test( "variable reference", function () {
-    var env = new Env(["one", "two"], [number(1), number(2)]);
+    var globalEnv = new Env(["three"], [number(3)]);
+    var env = new Env(["one", "two"], [number(1), number(2)], globalEnv);
 
-    ok( compute(symbol("one"), env).equal(number(1)) );
-    ok( compute(symbol("two"), env).equal(number(2)) );
+    deepEqual( compute(symbol("one"), env), number(1) );
+    deepEqual( compute(symbol("two"), env), number(2) );
 
-    var s1 = compute(symbol("apple"), env);
-    if (!s1.equal(errorUnknownSymbol())) {
-      console.log(s1);
-      ok( false );
-    }
+    deepEqual( compute(symbol("apple"), env), errorUnknownSymbol() );
+
+    deepEqual( compute(symbol("three"), env), number(3) );
   });
 
 })();
