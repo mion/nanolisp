@@ -26,7 +26,7 @@ test( "errors", function () {
   deepEqual( compute(s1), errorType() , "first element must be a symbol");
 });
 
-test( "quote", function () {
+test( "quote form", function () {
   var s1 = array([
     symbol("quote"),
     number(1)
@@ -46,4 +46,8 @@ test( "quote", function () {
   deepEqual( compute(s2), array([string("universe"), symbol("x"), number(42)]) );
 
   // TODO: (quote), (quote 1 2 3) => argument error
+});
+
+test( "if form", function () {
+  ok( true );
 });

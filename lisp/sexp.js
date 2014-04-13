@@ -13,6 +13,7 @@ Sexp.prototype.isNumber = function() { return this.is("Number"); };
 Sexp.prototype.isString = function() { return this.is("String"); };
 Sexp.prototype.isSymbol = function() { return this.is("Symbol"); };
 Sexp.prototype.isArray = function() { return this.is("Array"); };
+Sexp.prototype.isBool = function() { return this.is("Bool"); };
 Sexp.prototype.isError = function() { return this.is("Error"); };
 
 Sexp.prototype.equal = function(sexp) {
@@ -75,6 +76,11 @@ function array (value) {
 
 function symbol (value) {
   return new Sexp("Symbol", value);
+}
+
+function bool (value) {
+  assert( value === true || value === false );
+  return new Sexp("Bool", value);
 }
 
 function error (value) {

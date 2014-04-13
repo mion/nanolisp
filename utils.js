@@ -2,6 +2,12 @@ function print (msg) {
   console.log("[*] " + msg);
 }
 
+function assert (x) {
+  if (!x) {
+    throw new Error("assertion failed");
+  }
+}
+
 function assertDefined (x) {
   if (x == "undefined") {
     throw new Error("assertion failed: " + x + " is undefined");
