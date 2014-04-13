@@ -19,5 +19,9 @@ function compute (s, e) {
     } else {
       return errorUnknownSymbol();
     }
+  } else if (s.is("Array")) {
+  } else {
+    // TODO: what about Error types?
+    throw new TypeError("s-expression has type: " + s.type);
   }
 }

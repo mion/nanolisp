@@ -35,6 +35,9 @@ Sexp.prototype.equal = function(sexp) {
   }
 };
 
+Sexp.prototype.first = function() {
+};
+
 function string (value) {
   return new Sexp("String", value);
 }
@@ -57,4 +60,8 @@ function error (value) {
 
 function errorUnknownSymbol () {
   return error("unknown symbol");
+}
+
+function errorUnknownType () {
+  return error("unknown type");
 }

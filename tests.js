@@ -25,7 +25,8 @@
   //   QUnit.push(result, result, sexp1, sexp2, message);
   // };
 
-  test( "S-expressions", function () {
+  module( "SExp" );
+  test( "equality", function () {
     var sym1 = symbol("foo"),
         sym2 = symbol("bar");
 
@@ -44,7 +45,7 @@
     ok( ! num1.equal(num2) );
     ok( num1.equal(number(13)) );
 
-    // be careful with this: an sexp is an array of other sexps
+    // [!] Be careful with this: an sexp is an array of other sexps,
     // NOT raw values!
     var ary1 = array([ symbol("foo"), number(3), string("hello") ]);    
     var ary2 = array([ symbol("foo"), number(3), string("hello") ]);
@@ -60,8 +61,12 @@
     ok( ary4.equal(ary5) );
     ok( !ary4.equal(ary1) );
   });
+  test("first, rest", function () {
+    ok( true );
+  });
 
-  test( "Env new, get and set", function() {
+  module( "Env" );
+  test( "new, get and set", function() {
     var env = new Env(["a", "b"], [1, 2]);
 
     deepEqual( env.get("a"), 1 );
@@ -70,8 +75,7 @@
     env.set("c", 3);
     deepEqual( env.get("c"), 3 );
   });
-
-  test( "Env find", function () {
+  test( "find", function () {
     // TODO: maybe Env should only accept symbols as parameters,
     // instead of raw values.
     var env1 = new Env(["e", "x"], [5, 0]);
@@ -102,9 +106,7 @@
 
     deepEqual( compute(symbol("one"), env), number(1) );
     deepEqual( compute(symbol("two"), env), number(2) );
-
     deepEqual( compute(symbol("apple"), env), errorUnknownSymbol() );
-
     deepEqual( compute(symbol("three"), env), number(3) );
   });
 
