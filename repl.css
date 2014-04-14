@@ -9,7 +9,7 @@ font-family: 'Inconsolata', ;
 font-family: 'Open Sans', sans-serif;
 font-family: 'Francois One', sans-serif;
 */
-/*rgba(50, 50, 255, 0.5);*/
+
 html {
 	font-family: 'Open Sans', sans-serif;
 	background: 
@@ -20,10 +20,17 @@ html {
 		url('geometry/geometry.png');
 }
 
+.CodeMirror {
+	font-family: 'Inconsolata';
+	font-size: 14px;
+	border: 1px solid #eee;
+	border-radius: 3px;
+}
+
 #repl {
 	font-family: 'Inconsolata';
 	font-size: 17px;
 	/*line-height: 1.5;*/
-	color: #333;
-	background: #f6f6f6;
+	color: #030303;
+	background: #f7f7fc;
 }

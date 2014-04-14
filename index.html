@@ -17,6 +17,7 @@
 
     <!-- CodeMirror -->
     <link rel="stylesheet" href="codemirror/lib/codemirror.css">
+    <link rel="stylesheet" href="codemirror/theme/mdn-like.css">
     <script src="codemirror/lib/codemirror.js"></script>
     <script src="codemirror/mode/clojure/clojure.js"></script>
     <link rel="stylesheet" type="text/css" href="repl.css">
@@ -30,6 +31,7 @@
         </div>
         <div class="eight wide column">
             <div class="ui segment">
+                <textarea id="output" name="output" style="display: none;"></textarea>
             </div>
             <div class="ui fluid action input">
               <input id="repl" type="text" spellcheck="false" placeholder="Type an s-expression here..."/>
