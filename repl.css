@@ -1,0 +1,29 @@
+/*
+font-family: 'Overlock', cursive;
+font-family: 'Tauri', sans-serif;
+font-family: 'Patrick Hand SC', cursive;
+font-family: 'Londrina Outline', cursive;
+font-family: 'Port Lligat Slab', serif;
+font-family: 'Exo', sans-serif;
+font-family: 'Inconsolata', ;
+font-family: 'Open Sans', sans-serif;
+font-family: 'Francois One', sans-serif;
+*/
+/*rgba(50, 50, 255, 0.5);*/
+html {
+	font-family: 'Open Sans', sans-serif;
+	background: 
+		linear-gradient(
+			rgba(110, 207, 245, 0.25),
+			rgba(110, 207, 245, 0.25)
+		),
+		url('geometry/geometry.png');
+}
+
+#repl {
+	font-family: 'Inconsolata';
+	font-size: 17px;
+	/*line-height: 1.5;*/
+	color: #333;
+	background: #f6f6f6;
+}
