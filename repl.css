@@ -15,14 +15,15 @@ html {
 	font-size: 16px;
 	background: 
 		linear-gradient(
-			rgba(99, 186, 221, 0.35),
-			rgba(99, 186, 221, 0.35)
+			rgba(255, 255, 204, 0.20),
+			rgba(255, 255, 204, 0.20)
 		),
 		url('light_grey/light_grey.png');
 }
 
 .ui.header .sub.header {
-	font-size: 1.4rem;
+	font-size: 1.5rem;
+	color: #fff;
 }
 
 h2.ui.header {
@@ -33,7 +34,7 @@ h2 .title {
 	font-family: 'Francois One', sans-serif;
 	font-weight: 300;
 	color: white;
-	text-shadow: 1px 1px black;
+	text-shadow: 1px 1px #333;
 }
 
 .CodeMirror {
