@@ -6,7 +6,8 @@ var Sexp = function (type, value) {
 };
 
 Sexp.prototype.toString = function() {
-  return sprintf("<type: %s, value: %s>", this.type, this.value.toString());
+  // return sprintf("<type: %s, value: %s>", this.type, this.value.toString());
+  return this.value.toString();
 };
 
 Sexp.prototype.is = function(type) {
