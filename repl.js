@@ -15,19 +15,28 @@
 		matchBrackets: true
 	});
 
-	var output = CodeMirror.fromTextArea(document.getElementById("output"), {
+	exports.output = CodeMirror.fromTextArea(document.getElementById("output"), {
 		mode: "clojure",
 		tabSize: 2,
 		readOnly: true,
 		theme: "mdn-like"
 	});
 
-	var run = function () {
-		var input = editor.getValue();
+	var history = [];
+	var interpret = function(input) {
+		console.log(sprintf("Interpreting: %s", input));
 		var result = evaluate(input);
 		console.log(result);
 		output.setValue(result.toString());
 	};
+
+	$( "#repl" ).keypress(function(event) {
+		if (event.which == 13) {
+			event.preventDefault();
+			interpret( $(this).val() );
+			$(this).val("");
+		}
+	});
 
 	// CodeMirror.commands.save = function () {
 	// 	run();
@@ -36,9 +45,10 @@
 	// 	run();
 	// };
 
-	CodeMirror.keyMap.default['Cmd-Enter'] = function (cm) {
-		run();
+	CodeMirror.keyMap.default[ 'Cmd-Enter' ] = function( cm ) {
+		var input = editor.getValue();
+		interpret( input );
 	};
 
-	exports.run = run;
-})(window);
+	// exports.run = run;
+})( window );

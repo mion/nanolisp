@@ -5,11 +5,6 @@ var Sexp = function (type, value) {
   this.value = value;
 };
 
-Sexp.prototype.toString = function() {
-  // return sprintf("<type: %s, value: %s>", this.type, this.value.toString());
-  return this.value.toString();
-};
-
 Sexp.prototype.is = function(type) {
   return this.type === type;
 };
@@ -21,6 +16,13 @@ Sexp.prototype.isArray = function() { return this.is("Array"); };
 Sexp.prototype.isBool = function() { return this.is("Bool"); };
 Sexp.prototype.isLambda = function() { return this.is("Lambda"); };
 Sexp.prototype.isError = function() { return this.is("Error"); };
+
+Sexp.prototype.toString = function() {
+  // return sprintf("<type: %s, value: %s>", this.type, this.value.toString());
+  if (this.isArray()) {
+    return "(" + this.value.join(" ") + ")";
+  } else return this.value.toString();
+};
 
 Sexp.prototype.ok = function() {
   if (this.isError()) {
