@@ -1,119 +1,124 @@
-"use strict";
+(function () {
+  Array.method('first', function () {
+  });
+})();
 
-var Sexp = function (type, value) {
-  this.type = type;
-  this.value = value;
-};
+// "use strict";
 
-Sexp.prototype.is = function(type) {
-  return this.type === type;
-};
+// var Sexp = function (type, value) {
+//   this.type = type;
+//   this.value = value;
+// };
 
-Sexp.prototype.isNumber = function() { return this.is("Number"); };
-Sexp.prototype.isString = function() { return this.is("String"); };
-Sexp.prototype.isSymbol = function() { return this.is("Symbol"); };
-Sexp.prototype.isArray = function() { return this.is("Array"); };
-Sexp.prototype.isBool = function() { return this.is("Bool"); };
-Sexp.prototype.isLambda = function() { return this.is("Lambda"); };
-Sexp.prototype.isError = function() { return this.is("Error"); };
+// Sexp.prototype.is = function(type) {
+//   return this.type === type;
+// };
 
-Sexp.prototype.toString = function() {
-  // return sprintf("<type: %s, value: %s>", this.type, this.value.toString());
-  if (this.isArray()) {
-    return "(" + this.value.join(" ") + ")";
-  } else return this.value.toString();
-};
+// Sexp.prototype.isNumber = function() { return this.is("Number"); };
+// Sexp.prototype.isString = function() { return this.is("String"); };
+// Sexp.prototype.isSymbol = function() { return this.is("Symbol"); };
+// Sexp.prototype.isArray = function() { return this.is("Array"); };
+// Sexp.prototype.isBool = function() { return this.is("Bool"); };
+// Sexp.prototype.isLambda = function() { return this.is("Lambda"); };
+// Sexp.prototype.isError = function() { return this.is("Error"); };
 
-Sexp.prototype.ok = function() {
-  if (this.isError()) {
-    return this.value === "none";
-  } else return true;
-};
+// Sexp.prototype.toString = function() {
+//   // return sprintf("<type: %s, value: %s>", this.type, this.value.toString());
+//   if (this.isArray()) {
+//     return "(" + this.value.join(" ") + ")";
+//   } else return this.value.toString();
+// };
 
-Sexp.prototype.equal = function(sexp) {
-  if (!this.is(sexp.type)) {
-    return false;
-  } else {
-    if (this.isArray()) {
-      if (this.value.length != sexp.value.length) { return false; }
+// Sexp.prototype.ok = function() {
+//   if (this.isError()) {
+//     return this.value === "none";
+//   } else return true;
+// };
 
-      for (var i = 0; i < this.value.length; i++) {
-        var myValue = this.value[i];
-        var hisValue = sexp.value[i];
+// Sexp.prototype.equal = function(sexp) {
+//   if (!this.is(sexp.type)) {
+//     return false;
+//   } else {
+//     if (this.isArray()) {
+//       if (this.value.length != sexp.value.length) { return false; }
 
-        if (!myValue.equal(hisValue)) { return false; }
-      };
+//       for (var i = 0; i < this.value.length; i++) {
+//         var myValue = this.value[i];
+//         var hisValue = sexp.value[i];
 
-      return true;
-    } else {
-      return this.value === sexp.value; 
-    }
-  }
-};
+//         if (!myValue.equal(hisValue)) { return false; }
+//       };
 
-Sexp.prototype.at = function(index) {
-  if (this.isArray()) {
-    return this.value[index];
-  } else {
-    return errorType();
-  }
-};
+//       return true;
+//     } else {
+//       return this.value === sexp.value; 
+//     }
+//   }
+// };
 
-Sexp.prototype.first = function() {
-  return this.at(0);
-};
+// Sexp.prototype.at = function(index) {
+//   if (this.isArray()) {
+//     return this.value[index];
+//   } else {
+//     return errorType();
+//   }
+// };
 
-Sexp.prototype.rest = function() {
-  if (this.isArray()) {
-    return array( this.value.slice(1, this.value.length) );
-  } else {
-    return errorType();
-  }
-};
+// Sexp.prototype.first = function() {
+//   return this.at(0);
+// };
 
-var string = function (value) {
-  return new Sexp("String", value);
-};
+// Sexp.prototype.rest = function() {
+//   if (this.isArray()) {
+//     return array( this.value.slice(1, this.value.length) );
+//   } else {
+//     return errorType();
+//   }
+// };
 
-var number = function (value) {
-  return new Sexp("Number", value);
-};
+// var string = function (value) {
+//   return new Sexp("String", value);
+// };
 
-var array = function (value) {
-  return new Sexp("Array", value);
-};
+// var number = function (value) {
+//   return new Sexp("Number", value);
+// };
 
-var symbol = function (value) {
-  return new Sexp("Symbol", value);
-};
+// var array = function (value) {
+//   return new Sexp("Array", value);
+// };
 
-var bool = function (value) {
-  return new Sexp("Bool", value);
-};
+// var symbol = function (value) {
+//   return new Sexp("Symbol", value);
+// };
 
-var lambda = function (value) {
-  return new Sexp("Lambda", value);
-};
+// var bool = function (value) {
+//   return new Sexp("Bool", value);
+// };
 
-var error = function (value) {
-  return new Sexp("Error", value);
-};
+// var lambda = function (value) {
+//   return new Sexp("Lambda", value);
+// };
 
-var errorNone = function () {
-  return error("none");
-};
+// var error = function (value) {
+//   return new Sexp("Error", value);
+// };
 
-// a symbol was not found in a certain Env
-var errorReference = function () {
-  return error("reference");
-};
+// var errorNone = function () {
+//   return error("none");
+// };
 
-// a list function called on an atom (and vice-versa)
-var errorType = function () {
-  return error("type");
-};
+// // a symbol was not found in a certain Env
+// var errorReference = function () {
+//   return error("reference");
+// };
 
-// wrong number of arguments
-var errorArgument = function () {
-  return error("argument");
-};
+// // a list function called on an atom (and vice-versa)
+// var errorType = function () {
+//   return error("type");
+// };
+
+// // wrong number of arguments
+// var errorArgument = function () {
+//   return error("argument");
+// };
