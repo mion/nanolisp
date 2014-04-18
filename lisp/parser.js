@@ -26,7 +26,7 @@
     // if ((token.length >= 2) && (token[0] === '"') && (token[token.length - 1] === '"')) {
     //   return token.slice(1, token.length - 1);
     // }
-    
+
     return token;
   };
 
@@ -37,9 +37,9 @@
 
     var token = tokens.shift();
     if ("(" === token) {
-      var L = array([]);
+      var L = [];
       while (tokens[0] !== ")") {
-        L.value.push(readFrom(tokens));
+        L.push(readFrom(tokens));
       }
       tokens.shift(); // remove ')'
       return L;

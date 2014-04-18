@@ -25,44 +25,33 @@
   test( "tokens", function () {
     eq( tokenize('(foo (bar) 2)'), ['(', 'foo', '(', 'bar', ')', '2', ')'] );
     eq( tokenize(' (foo bar baz )'), ["(", "foo", "bar", "baz", ")"] );
+    eq( tokenize('(+ 5 -1)'), ["(", "+", "5", "-1", ")"] );
   });
 
-  test( "parse", function () {
+  test( "parse atoms", function () {
     eq( parse("1"), 1 );
     eq( parse("-42"), -42 );
-
     eq( parse("true"), true );
     eq( parse("false"), false );
-
-    eq( parse("\"foo\""), string("foo") );
+    eq( parse("foo"), "foo" );
+  });
     // TODO: implement multiple word string parsing
     // eq( parse("\"hello world\""), string("hello world") );
-    eq( parse("\"\""), string("") );
+    // eq( parse("\"\""), string("") );
 
-    eq( parse("bar"), symbol("bar") );
+    // eq( parse("bar"), symbol("bar") );
 
-    eq( parse("()"), array([]) );
-    eq( parse("(foo)"), array([ symbol("foo") ]) );
+  test('parse lists', function () {
+    eq( parse('()'), [] );
+    eq( parse('(foo)'), ['foo'] );
+    eq( parse("(foo -8 bar 5 true)"), ['foo', -8, 'bar', 5, true] );
     eq( 
-      parse("(foo -8 \"bar\" 5 true)"), 
-      array([ symbol("foo"), number(-8), string("bar"), number(5), bool(true) ]) 
-    );  
+      parse("(+123 foo (bar (+ 2 3) -40) baz ())"),
+      [123, 'foo', ['bar', ['+', 2, 3], -40], 'baz', []]
+    );
     eq( 
-      parse("(-3 \"baz\" (foo (2 3) 4) baz ())"), 
-      array([
-        number(-3),
-        string("baz"),
-        array([
-          symbol("foo"),
-          array([
-            number(2),
-            number(3)
-          ]),
-          number(4)
-        ]),
-        symbol("baz"),
-        array([])
-      ])
+      parse("(() () (()))"),
+      [[], [], [[]]]
     );
   });
 
