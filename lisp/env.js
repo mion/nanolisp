@@ -1,44 +1,47 @@
-"use strict";
+(function (exports) {
+  'use strict';
 
-var Env = function (parms, args, outer) {
-  this.outer = outer;
-  var dict = {};
+  function makeEnv(spec) {
+    var that = {},
+        context,
+        outer;
 
-  if (parms && args) {
-    _.zip(parms, args).forEach(function (parm_arg) {
-      var parm = parm_arg[0];
-      var arg = parm_arg[1];
+    outer = spec.outer;
 
-      dict[parm.value] = arg;
-    });
-  }
+    if (outer) {
+      context = Object.create(outer.context);
 
-  this.dict = dict;
-};
-
-Env.prototype.get = function(parm) {
-  if (this.dict[parm.value]) {
-    return this.dict[parm.value];
-  } else {
-    return errorReference();
-  }
-};
-
-Env.prototype.set = function(sym, sexp) {
-  this.dict[sym.value] = sexp;
-  return errorNone();
-};
-
-Env.prototype.find = function(sym) {
-  var sexp = this.get(sym);
-
-  if (sexp.isError()) {
-    if (!this.outer) {
-      return errorReference();
+      var key;
+      for (key in spec.context) {
+        context[key] = spec.context[key];
+      }
     } else {
-      return this.outer.find(sym);
+      context = spec.context;
     }
-  } else {
-    return this;
+
+    that.context = context;
+    that.outer = outer;
+
+    that.get = function (key) {
+      return that.context[key];
+    };
+
+    that.set = function (key, value) {
+      that.context[key] = value;
+    };
+
+    that.find = function (key) {
+      if (that.context[key]) {
+        return that;
+      } else if (that.outer) {
+        return that.find(key);
+      } else {
+        return undefined;
+      }
+    };
+
+    return that;
   }
-};
+
+  exports.makeEnv = makeEnv;
+})(window);
