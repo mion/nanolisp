@@ -14,20 +14,20 @@
 
   var atomize = function (token) {
     if (token === "true") {
-      return bool(true);
+      return true;
     }
     if (token === "false") {
-      return bool(false);
+      return false;
     }
     if (!_.isNaN(parseInt(token))) {
-      return number(parseInt(token));
+      return parseInt(token);
     }
-    if ((token.length >= 2) && (token[0] === '"') && (token[token.length - 1] === '"')) {
-      return string(token.slice(1, token.length - 1));
-    }
-
-    // TODO: things like "-" can become symbols
-    return symbol(token);
+    // TODO: literal strings
+    // if ((token.length >= 2) && (token[0] === '"') && (token[token.length - 1] === '"')) {
+    //   return token.slice(1, token.length - 1);
+    // }
+    
+    return token;
   };
 
   var readFrom = function (tokens) {

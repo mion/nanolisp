@@ -12,13 +12,14 @@
 
     eq( atomize('foo'), 'foo' );
 
-    eq( atomize('"foo"'), 'foo' );
-    eq( atomize('"hello world"'), 'hello world' );
-    eq( atomize('"f"'), 'f' );
-    eq( atomize('""'), '' );
+    // TODO: literal strings
+    // eq( atomize('"foo"'), 'foo' );
+    // eq( atomize('"hello world"'), 'hello world' );
+    // eq( atomize('"f"'), 'f' );
+    // eq( atomize('""'), '' );
 
-    eq( atomize("true"), bool(true) );
-    eq( atomize("false"), bool(false) );
+    eq( atomize("true"), true );
+    eq( atomize("false"), false );
   });
 
   test( "tokens", function () {
