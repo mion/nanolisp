@@ -1,63 +1,68 @@
-"use strict";
+(function () {
+  'use strict';
 
-module( "parser" );
+  var eq = deepEqual;
 
-test( "tokens", function () {
-  deepEqual( tokenize('(foo (bar) 2)'), ['(', 'foo', '(', 'bar', ')', '2', ')'] );
-  deepEqual( tokenize(' (foo bar baz )'), ["(", "foo", "bar", "baz", ")"] );
-});
+  module( 'parser' );
 
-test( "atomize", function () {
-  deepEqual( atomize("0"), number(0) );
-  deepEqual( atomize("-1"), number(-1) );
-  deepEqual( atomize("+429"), number(429) );
+  test( 'atomize', function () {
+    eq( atomize('0'), 0 );
+    eq( atomize('-1'), -1 );
+    eq( atomize('+429'), 429 );
 
-  deepEqual( atomize("foo"), symbol("foo") );
+    eq( atomize('foo'), 'foo' );
 
-  deepEqual( atomize("\"foo\""), string("foo") );
-  deepEqual( atomize("\"hello world\""), string("hello world") );
-  deepEqual( atomize("\"f\""), string("f") );
-  deepEqual( atomize("\"\""), string("") );
+    eq( atomize('"foo"'), 'foo' );
+    eq( atomize('"hello world"'), 'hello world' );
+    eq( atomize('"f"'), 'f' );
+    eq( atomize('""'), '' );
 
-  deepEqual( atomize("true"), bool(true) );
-  deepEqual( atomize("false"), bool(false) );
-});
+    eq( atomize("true"), bool(true) );
+    eq( atomize("false"), bool(false) );
+  });
 
-test( "parse", function () {
-  deepEqual( parse("1"), number(1) );
-  deepEqual( parse("-42"), number(-42) );
+  test( "tokens", function () {
+    eq( tokenize('(foo (bar) 2)'), ['(', 'foo', '(', 'bar', ')', '2', ')'] );
+    eq( tokenize(' (foo bar baz )'), ["(", "foo", "bar", "baz", ")"] );
+  });
 
-  deepEqual( parse("true"), bool(true) );
-  deepEqual( parse("false"), bool(false) );
+  test( "parse", function () {
+    eq( parse("1"), 1 );
+    eq( parse("-42"), -42 );
 
-  deepEqual( parse("\"foo\""), string("foo") );
-  // TODO: implement multiple word string parsing
-  // deepEqual( parse("\"hello world\""), string("hello world") );
-  deepEqual( parse("\"\""), string("") );
+    eq( parse("true"), true );
+    eq( parse("false"), false );
 
-  deepEqual( parse("bar"), symbol("bar") );
+    eq( parse("\"foo\""), string("foo") );
+    // TODO: implement multiple word string parsing
+    // eq( parse("\"hello world\""), string("hello world") );
+    eq( parse("\"\""), string("") );
 
-  deepEqual( parse("()"), array([]) );
-  deepEqual( parse("(foo)"), array([ symbol("foo") ]) );
-  deepEqual( 
-    parse("(foo -8 \"bar\" 5 true)"), 
-    array([ symbol("foo"), number(-8), string("bar"), number(5), bool(true) ]) 
-  );  
-  deepEqual( 
-    parse("(-3 \"baz\" (foo (2 3) 4) baz ())"), 
-    array([
-      number(-3),
-      string("baz"),
+    eq( parse("bar"), symbol("bar") );
+
+    eq( parse("()"), array([]) );
+    eq( parse("(foo)"), array([ symbol("foo") ]) );
+    eq( 
+      parse("(foo -8 \"bar\" 5 true)"), 
+      array([ symbol("foo"), number(-8), string("bar"), number(5), bool(true) ]) 
+    );  
+    eq( 
+      parse("(-3 \"baz\" (foo (2 3) 4) baz ())"), 
       array([
-        symbol("foo"),
+        number(-3),
+        string("baz"),
         array([
-          number(2),
-          number(3)
+          symbol("foo"),
+          array([
+            number(2),
+            number(3)
+          ]),
+          number(4)
         ]),
-        number(4)
-      ]),
-      symbol("baz"),
-      array([])
-    ])
-  );
-});
+        symbol("baz"),
+        array([])
+      ])
+    );
+  });
+
+})();
