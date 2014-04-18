@@ -38,6 +38,10 @@
     eq( parent.get('home'), 'Rio' );
   });
 
+  test('find', function () {
+    eq( child.find('home'), parent );
+  });
+
 })();
 
 // test( "new, get and set", function() {

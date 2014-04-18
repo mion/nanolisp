@@ -31,10 +31,10 @@
     };
 
     that.find = function (key) {
-      if (that.context[key]) {
+      if (that.context.hasOwnProperty(key)) {
         return that;
       } else if (that.outer) {
-        return that.find(key);
+        return that.outer.find(key);
       } else {
         return undefined;
       }
