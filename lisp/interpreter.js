@@ -42,14 +42,23 @@
       if (value) {
         return value;
       } else {
-        throw new ReferenceError();
+        var msg = sprintf('reference to undefined symbol %s', value);
+        throw new ReferenceError(msg);
       }
-    } else if (_.isArray(s)) { // list
+    } else if (_.isArray(s)) { // list: we assume it's a form
+      var first = _.first(s);
+
+      if (!_.isString(first)) {
+        var msg = sprintf('first element in a form must be a string, not %s', first);
+        throw new TypeError(msg);
+      }
+
       return null;
     } else { // constant literal
       return s;
     }
   };
+
   // var compute = function (s, e) { 
   //   e = e || global;
    

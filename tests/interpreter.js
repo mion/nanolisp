@@ -2,13 +2,13 @@
   'use strict';
 
   var eq,
-      global;
+      env;
 
   eq = deepEqual;
 
   module('interpreter', {
     setup: function () {      
-      global = makeEnv({
+      env = makeEnv({
         context: {
           foo: "bar"
         }
@@ -27,20 +27,19 @@
         compute('foo');
       },
       ReferenceError
-    );
+    ); 
+
+    eq( compute('foo', env), 'bar' );
   });
 
-//   test( "constant literals", function (t) {
-//     t.evl( '"hello"', {str: "hello"} );
-//     t.evl( '3', {num: 3} );
-//     t.evl( '-2', {num: -2} );
-//   });
-
-//   test( "variable reference", function (t) {
-//     t.evl( 'foo', {err: "reference"} );
-//     t.evl( 'name', {env: fx.env, str: "mion"} );
-//     t.evl( 'male', {env: fx.env, bool: true} );
-//   });
+  test('errors', function () {
+    throws(
+      function () {
+        compute([1, 2]);
+      },
+      TypeError
+    );
+  });
 
 //   test( "errors", function (t) { 
 //     t.evl( '(1 2)', {err: "type"} );
