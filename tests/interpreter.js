@@ -2,9 +2,14 @@
   'use strict';
 
   var eq,
+      ceq,
       env;
 
   eq = deepEqual;
+
+  ceq = function (exp, result, env) {
+    eq( compute(exp, env), result);
+  };
 
   module('interpreter', {
     setup: function () {      
@@ -19,6 +24,8 @@
   test('constant literal', function () {
     eq( compute(42), 42 );
     eq( compute(-123), -123 );
+    eq( compute(false), false );
+    eq( compute(true), true );
   });
 
   test('variable reference', function () {
@@ -41,22 +48,27 @@
     );
   });
 
-//   test( "errors", function (t) { 
-//     t.evl( '(1 2)', {err: "type"} );
-//   });
+  test('quote form', function () {
+    eq( compute(['quote', 'foo']), 'foo');
+    eq( compute(['quote', [123, 'bar']]), [123, 'bar']);
+  });
 
-//   test( "quote form", function (t) {
-//     t.evl( '(quote)', {err: "argument"} );
-//     t.evl( '(quote foo bar)', {err: "argument"} );
+  test('if form', function () {
+    eq( compute(['if', true, 123, 456]), 123 );
+    eq( compute(['if', false, 123, ['quote', 'yes']]), 'yes' );
+    ceq( ['if', true, ['if', false, 123, 'foo'], undefined], 'bar', env );
+  });
 
-//     t.evl( '(quote foo)', {sym: "foo"} );
-//     t.evl( '(quote 1)', {num: 1} );
-//     t.evl( '(quote -429)', {num: -429} );
-
-//     t.evl( '(quote (1 2 3))', '(1 2 3)' );
-
-//     t.evl( '(quote ("hello" foo -25))', '("hello" foo -25)' );
-//   });
+  test('set form', function () {
+    throws(
+      function () {
+        compute( ['set', 'x', 123] );
+      },
+      ReferenceError
+    );
+    ceq( ['set', 'foo', 123], null, env );
+    ceq( 'foo', 123, env );
+  });
 
 //   test( "if form", function (t) {
 //     t.evl( '(if)', {err: "argument"} );
