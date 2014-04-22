@@ -25,11 +25,13 @@
   });
 
   test('init', function () {
-    var env = makeEnv(['foo', 'x', 'male'], ['bar', 123, true]);
+    var env = makeEnv(['foo', 'x', 'male'], ['bar', 123, true], child);
 
     eq( env.get('foo'), 'bar' );
     eq( env.get('x'), 123 );
     eq( env.get('male'), true );
+    eq( env.get('name'), 'Maria' );
+    eq( env.get('home'), 'Rio' );
   });
 
   test('get', function () {

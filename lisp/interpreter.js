@@ -40,6 +40,7 @@
         cond,
         exp,
         env,
+        params,
         sym;
 
     e = e || global;
@@ -47,7 +48,7 @@
     if (_.isString(s)) { // variable reference
       value = e.get(s);
 
-      if (value) {
+      if (value !== undefined) {
         return value;
       } else {
         msg = sprintf('reference to undefined symbol %s', value);
@@ -106,7 +107,17 @@
         return null;
       case 'fn':
         if (s.length !== 3) { throw new RangeError(); } 
-        return null;
+
+        params = s[1];
+        exp = s[2];
+
+        if (!_.isArray(params)) { throw new TypeError(); }
+        if (!params.every(function (x) {return _.isString(x);})) { throw new TypeError(); }
+
+        return function () {
+          var args = Array.prototype.slice.call(arguments, 0);
+          return compute(exp, makeEnv(params, args, e));
+        }
       }
     } else { // constant literal
       return s;
