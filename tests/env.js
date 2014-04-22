@@ -24,6 +24,14 @@
     }
   });
 
+  test('init', function () {
+    var env = makeEnv(['foo', 'x', 'male'], ['bar', 123, true]);
+
+    eq( env.get('foo'), 'bar' );
+    eq( env.get('x'), 123 );
+    eq( env.get('male'), true );
+  });
+
   test('get', function () {
     eq( child.get('name'), 'Maria' );
     eq( child.get('home'), 'Rio' );

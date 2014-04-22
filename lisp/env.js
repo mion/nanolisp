@@ -1,7 +1,32 @@
 (function (exports) {
   'use strict';
 
-  function makeEnv(spec) {
+  function makeEnv() {
+    var args = Array.prototype.slice.call(arguments, 0);
+
+    if (args.length == 1) {
+      return makeEnvWithSpec(args[0]);
+    } else if (args.length == 2) {
+      return makeEnvWithArray(args[0], args[1]);
+    } else if (args.length == 3) {
+      return makeEnvWithArray(args[0], args[1], args[2]);
+    } else throw new RangeError();
+  }
+
+  function makeEnvWithArray(symbols, values, outerEnv) {
+    var ctx = {};    
+
+    for (var i = 0; i < symbols.length; i++) {
+      ctx[symbols[i]] = values[i];
+    };
+
+    return makeEnvWithSpec({
+      context: ctx,
+      outer: outerEnv
+    });
+  }
+
+  function makeEnvWithSpec(spec) {
     var that = {},
         context,
         outer;

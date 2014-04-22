@@ -63,11 +63,11 @@
 
       switch (first) {
       case 'quote':
-        if (s.length !== 2) { throw new ArgumentError(); }
+        if (s.length !== 2) { throw new RangeError(); }
 
         return s[1];
       case 'if':
-        if (s.length !== 4) { throw new ArgumentError(); }
+        if (s.length !== 4) { throw new RangeError(); }
 
         cond = compute(s[1], e);
 
@@ -79,7 +79,7 @@
           return compute(s[3], e);
         }
       case 'set':
-        if (s.length !== 3) { throw new ArgumentError(); }
+        if (s.length !== 3) { throw new RangeError(); }
 
         sym = s[1];
         exp = s[2];
@@ -95,7 +95,7 @@
           throw new ReferenceError();
         }
       case 'def':
-        if (s.length !== 3) { throw new ArgumentError(); }
+        if (s.length !== 3) { throw new RangeError(); }
 
         sym = s[1];
         exp = s[2];
@@ -105,7 +105,7 @@
         e.set(sym, compute(exp, e));
         return null;
       case 'fn':
-        if (s.length !== 3) { throw new ArgumentError(); } 
+        if (s.length !== 3) { throw new RangeError(); } 
         return null;
       }
     } else { // constant literal
