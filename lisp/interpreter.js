@@ -27,15 +27,23 @@
   //   return _.reduce(args, function (m, x) { return m * x; }, 1);
   // });
 
-  var global = makeEnv({});
-  
+  var global = makeEnv({
+    context: {}
+  });
+
   // Evaluate an s-expression `s` in an environment `e`
-  // NB: traditionally called "eval", avoid conflict with JavaScript's own eval  
+  // NB: Traditionally called `eval`, we use `compute` to avoid conflict with JavaScript's builtin `eval`
   var compute = function (s, e) {
     e = e || global;
 
     if (_.isString(s)) { // variable reference
-      return null;
+      var value = e.get(s);
+
+      if (value) {
+        return value;
+      } else {
+        throw new ReferenceError();
+      }
     } else if (_.isArray(s)) { // list
       return null;
     } else { // constant literal

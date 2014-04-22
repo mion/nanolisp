@@ -21,6 +21,15 @@
     eq( compute(-123), -123 );
   });
 
+  test('variable reference', function () {
+    throws(
+      function () {
+        compute('foo');
+      },
+      ReferenceError
+    );
+  });
+
 //   test( "constant literals", function (t) {
 //     t.evl( '"hello"', {str: "hello"} );
 //     t.evl( '3', {num: 3} );
