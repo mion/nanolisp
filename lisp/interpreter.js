@@ -34,26 +34,80 @@
   // Evaluate an s-expression `s` in an environment `e`
   // NB: Traditionally called `eval`, we use `compute` to avoid conflict with JavaScript's builtin `eval`
   var compute = function (s, e) {
+    var value,
+        msg,
+        first,
+        cond,
+        exp,
+        env,
+        sym;
+
     e = e || global;
 
     if (_.isString(s)) { // variable reference
-      var value = e.get(s);
+      value = e.get(s);
 
       if (value) {
         return value;
       } else {
-        var msg = sprintf('reference to undefined symbol %s', value);
+        msg = sprintf('reference to undefined symbol %s', value);
         throw new ReferenceError(msg);
       }
     } else if (_.isArray(s)) { // list: we assume it's a form
-      var first = _.first(s);
+      first = _.first(s);
 
       if (!_.isString(first)) {
-        var msg = sprintf('first element in a form must be a string, not %s', first);
+        msg = sprintf('first element in a form must be a string, not %s', first);
         throw new TypeError(msg);
       }
 
-      return null;
+      switch (first) {
+      case 'quote':
+        if (s.length !== 2) { throw new ArgumentError(); }
+
+        return s[1];
+      case 'if':
+        if (s.length !== 4) { throw new ArgumentError(); }
+
+        cond = compute(s[1], e);
+
+        if (!_.isBoolean(cond)) { throw new TypeError(); }
+
+        if (cond) {
+          return compute(s[2], e);
+        } else {
+          return compute(s[3], e);
+        }
+      case 'set':
+        if (s.length !== 3) { throw new ArgumentError(); }
+
+        sym = s[1];
+        exp = s[2];
+
+        if (!_.isString(sym)) { throw new TypeError(); }
+
+        env = e.find(sym);
+
+        if (env) {
+          env.set(sym, compute(exp, e));
+          return null;
+        } else {
+          throw new ReferenceError();
+        }
+      case 'def':
+        if (s.length !== 3) { throw new ArgumentError(); }
+
+        sym = s[1];
+        exp = s[2];
+
+        if (!_.isString(sym)) { throw new TypeError(); }
+
+        e.set(sym, compute(exp, e));
+        return null;
+      case 'fn':
+        if (s.length !== 3) { throw new ArgumentError(); } 
+        return null;
+      }
     } else { // constant literal
       return s;
     }
