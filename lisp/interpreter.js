@@ -40,6 +40,8 @@
         first,
         cond,
         exp,
+        exps,
+        proc,
         env,
         params,
         sym;
@@ -127,6 +129,13 @@
         });
 
         return returnValue;
+      default: // (proc exp*)
+        exps = s.map(function (exp) {
+          return compute(exp, e);
+        });
+        proc = exps.shift();
+
+        return proc(exps);
       }
     } else { // constant literal
       return s;
