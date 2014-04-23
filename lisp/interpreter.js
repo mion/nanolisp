@@ -35,6 +35,7 @@
   // NB: Traditionally called `eval`, we use `compute` to avoid conflict with JavaScript's builtin `eval`
   var compute = function (s, e) {
     var value,
+        returnValue,
         msg,
         first,
         cond,
@@ -118,6 +119,14 @@
           var args = Array.prototype.slice.call(arguments, 0);
           return compute(exp, makeEnv(params, args, e));
         }
+      case 'do':
+        if (s.length < 2) { throw new RangeError(); }
+
+        _.rest(s).forEach(function (exp) { 
+          returnValue = compute(exp, e);
+        });
+
+        return returnValue;
       }
     } else { // constant literal
       return s;
