@@ -54,16 +54,16 @@
       if (value !== undefined) {
         return value;
       } else {
-        msg = sprintf('reference to undefined symbol %s', value);
+        msg = sprintf('symbol "%s" is undefined', value);
         throw new ReferenceError(msg);
       }
     } else if (_.isArray(s)) { // list: we assume it's a form
       first = _.first(s);
 
-      if (!_.isString(first)) {
-        msg = sprintf('first element in a form must be a string, not %s', first);
-        throw new TypeError(msg);
-      }
+      // if (!_.isString(first)) {
+      //   msg = sprintf('first element in a form must be a string, not %s', first);
+      //   throw new TypeError(msg);
+      // }
 
       switch (first) {
       case 'quote':
@@ -75,7 +75,7 @@
 
         cond = compute(s[1], e);
 
-        if (!_.isBoolean(cond)) { throw new TypeError(); }
+        if (!_.isBoolean(cond)) { throw new TypeError(sprintf('if form condition must be a boolean, not %s', inspect(cond))); }
 
         if (cond) {
           return compute(s[2], e);
@@ -88,7 +88,7 @@
         sym = s[1];
         exp = s[2];
 
-        if (!_.isString(sym)) { throw new TypeError(); }
+        if (!_.isString(sym)) { throw new TypeError(sprintf('set form first argument must be a symbol, not %s', inspect(sym))); }
 
         env = e.find(sym);
 
@@ -104,7 +104,7 @@
         sym = s[1];
         exp = s[2];
 
-        if (!_.isString(sym)) { throw new TypeError(); }
+        if (!_.isString(sym)) { throw new TypeError(sprintf('def form first argument must be a symbol, not %s', inspect(sym))); }
 
         e.set(sym, compute(exp, e));
         return null;
@@ -114,11 +114,11 @@
         params = s[1];
         exp = s[2];
 
-        if (!_.isArray(params)) { throw new TypeError(); }
-        if (!params.every(function (x) {return _.isString(x);})) { throw new TypeError(); }
+        if (!_.isArray(params)) { throw new TypeError(sprintf('fn form first argument must be an array, not %s', inspect(params))); }
+        if (!params.every(function (x) {return _.isString(x);})) { throw new TypeError('fn form: parameter %s is not a string', inspect(x)); }
 
-        return function () {
-          var args = Array.prototype.slice.call(arguments, 0);
+        return function (args) {
+          // var args = Array.prototype.slice.call(arguments, 0);
           return compute(exp, makeEnv(params, args, e));
         }
       case 'do':
@@ -251,5 +251,5 @@
   };
 
   exports.compute = compute;
-  exports.evalute = evaluate;
+  exports.evaluate = evaluate;
 })(window);

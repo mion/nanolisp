@@ -2,6 +2,23 @@ var print = function (msg) {
   console.log("[*] " + msg);
 };
 
+var inspect = function (x) {
+  var type;
+  if (_.isArray(x)) { type = "Array"; }
+  else if (_.isArguments(x)) { type = "Arguments"; }
+  else if (_.isFunction(x)) { type = "Function"; }
+  else if (_.isString(x)) { type = "String"; }
+  else if (_.isNumber(x)) { type = "Number"; }
+  else if (_.isBoolean(x)) { type = "Boolean"; }
+  else if (_.isUndefined(x)) { type = "Undefined"; }
+  else if (_.isNull(x)) { type = "Null"; }
+  else if (_.isNaN(x)) { type = "NaN"; }
+  else if (_.isObject(x)) { type = "Object"; }
+  else { type = "Other"; }
+
+  return sprintf("`%s`(%s)", x, type);
+};
+
 var assert = function (exp) {
   if (!exp) {
     throw new Error("assertion failed");

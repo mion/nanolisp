@@ -70,6 +70,19 @@
     ceq( 'foo', 123, env );
   });
 
+  test('def form', function () {
+    ceq( ['def', 'foo', 123], null, env );
+    ceq( 'foo', 123, env );
+  });
+
+  test('do form', function () {
+    ok( true );
+  });
+
+  test('fn form, procedure call', function () {
+    ceq( [['fn', ['x'], ['if', 'x', 123, 456]], true], 123 );
+  });
+
 //   test( "if form", function (t) {
 //     t.evl( '(if)', {err: "argument"} );
 //     t.evl( '(if true "hi")', {err: "argument"} );
