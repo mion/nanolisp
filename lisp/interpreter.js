@@ -28,7 +28,31 @@
   // });
 
   var global = makeEnv({
-    context: {}
+    context: {
+      '+': function () {
+        return _.reduce(arguments, function (m, x) { return m + x; }, 0);
+      },
+      '-': function () {
+        var args = Array.prototype.slice.call(arguments);
+        var first = args.shift();
+        return _.reduce(args, function (m, x) { return m - x; }, first);
+      },
+      '*': function () {
+        var args = Array.prototype.slice.call(arguments);
+        return _.reduce(args, function (m, x) { return m * x; }, 1);
+      },
+      '/': function () {
+        var args = Array.prototype.slice.call(arguments);
+        var first = args.shift();
+        return _.reduce(args, function (m, x) { return m / x; }, first);
+      },
+      '=': function () {
+        var args = Array.prototype.slice.call(arguments);
+        var first = args.shift();
+        return _.every(_.map(args, function (x) { return _.isEqual(first, x); }), _.identity);
+      },
+      'random': _.random
+    }
   });
 
   // Evaluate an s-expression `s` in an environment `e`
@@ -117,8 +141,8 @@
         if (!_.isArray(params)) { throw new TypeError(sprintf('fn form first argument must be an array, not %s', inspect(params))); }
         if (!params.every(function (x) {return _.isString(x);})) { throw new TypeError('fn form: parameter %s is not a string', inspect(x)); }
 
-        return function (args) {
-          // var args = Array.prototype.slice.call(arguments, 0);
+        return function () {
+          var args = Array.prototype.slice.call(arguments, 0);
           return compute(exp, makeEnv(params, args, e));
         }
       case 'do':
@@ -135,7 +159,7 @@
         });
         proc = exps.shift();
 
-        return proc(exps);
+        return proc.apply(null, exps);
       }
     } else { // constant literal
       return s;
