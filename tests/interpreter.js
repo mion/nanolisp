@@ -105,6 +105,7 @@
     eeq('(= (list 2 3) (rest (list 1 2 3)))', true);
     eeq('(push 1 (list 2 3))', [2, 3, 1]);
     eeq('(add 1 (list 2 3))', [1, 2, 3]);
+    eeq('(symbol? (quote foo))', true);
   });
 
 })();

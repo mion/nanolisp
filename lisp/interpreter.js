@@ -36,6 +36,7 @@
       'add': function () { return [arguments[0]].concat(arguments[1]); },
       'list?': _.isArray,
       'null?': _.isNull,
+      'symbol?': _.isString,
       'first': _.first,
       'rest': _.rest,
       'random': _.random
