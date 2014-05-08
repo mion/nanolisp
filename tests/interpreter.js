@@ -3,12 +3,17 @@
 
   var eq,
       ceq,
+      eeq,
       env;
 
   eq = deepEqual;
 
   ceq = function (exp, result, env) {
-    eq( compute(exp, env), result);
+    eq( compute(exp, env), result );
+  };
+
+  eeq = function (str, result, env) {
+    eq( evaluate(str, env), result );
   };
 
   module('interpreter', {
@@ -88,6 +93,11 @@
     ceq( ['*', 2, 3, 4], 2*3*4 );
     ceq( ['-', 2, 3], 2 - 3 );
     ceq( ['=', 2, 2, ['/', 4, 2]], true );
+    ceq( ['>', 3, 2], true );
+    ceq( ['<', -1, 0], true );
+    eeq('(array? (quote (1 2 3)))', true);
+    eeq('(>= 10 (random 0 10))', true);
+    eeq('(not (array? 25))', true);
   });
 
 })();
