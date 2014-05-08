@@ -32,6 +32,8 @@
       'not': function () { return !arguments[0]; },
       'size': function () { return arguments[0].length; },
       'list': function () { return Array.prototype.slice.call(arguments); },
+      'push': function () { return arguments[1].concat(arguments[0]); },
+      'add': function () { return [arguments[0]].concat(arguments[1]); },
       'list?': _.isArray,
       'null?': _.isNull,
       'first': _.first,
