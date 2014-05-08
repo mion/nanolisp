@@ -30,8 +30,12 @@
       '<': function () { return arguments[0] < arguments[1]; },
       '<=': function () { return arguments[0] <= arguments[1]; },
       'not': function () { return !arguments[0]; },
-      // 'size': function () { return arguments[0]; },
-      'array?': _.isArray,
+      'size': function () { return arguments[0].length; },
+      'list': function () { return Array.prototype.slice.call(arguments); },
+      'list?': _.isArray,
+      'null?': _.isNull,
+      'first': _.first,
+      'rest': _.rest,
       'random': _.random
     }
   });

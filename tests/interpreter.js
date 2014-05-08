@@ -95,9 +95,14 @@
     ceq( ['=', 2, 2, ['/', 4, 2]], true );
     ceq( ['>', 3, 2], true );
     ceq( ['<', -1, 0], true );
-    eeq('(array? (quote (1 2 3)))', true);
+    eeq('(list? (quote (1 2 3)))', true);
     eeq('(>= 10 (random 0 10))', true);
-    eeq('(not (array? 25))', true);
+    eeq('(not (list? 25))', true);
+    eeq('(size (quote (1 2 3)))', 3);
+    eeq('(first (quote (1 2 3)))', 1);
+    eeq('(rest (quote (1 2 3)))', [2, 3]);
+    eeq('(list 1 2 3)', [1, 2, 3]);
+    eeq('(= (list 2 3) (rest (list 1 2 3)))', true);
   });
 
 })();
